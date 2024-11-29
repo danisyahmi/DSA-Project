@@ -17,43 +17,31 @@ Follow the steps below to clone this repository and work with branches using Git
 
 ### Navigate to the project directory:
 
-    ```bash
     Copy code
     cd <repository-folder-name>
-    ```
 
 ### Work with Branches
 
 To list all branches:
 
-    ```bash
     git branch -a
-    ```
 
 To create and switch to a new branch:
 Replace <branch-name> with the desired branch name.
 
-    ```bash
     git checkout -b <branch-name>
-    ```
 
 To switch to an existing branch:
 
-    ```bash
     git checkout <branch-name>
-    ```
 
 To push changes to the remote branch:
 
-    ```bash
     git push origin <branch-name>
-    ```
 
 To update your branch with the latest changes from main (or another branch):
 
-    ```bash
     git pull origin main
-    ```
 
 ### Contribute
 
