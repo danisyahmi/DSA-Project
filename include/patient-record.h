@@ -14,12 +14,11 @@ public:
     Patient_Record();
     ~Patient_Record() {};
     void pushPatient(std::string, std::string, std::string);
-    void popPatient();
+    Patient* popPatient();
     void updatePatient(std::string name);
     void updatePatient(int id);
-    void deletePatient();
     void display();
-    Patient *traverseLastNode();
+    // Patient *traverseLastNode();
     bool underflow();
     bool overflow();
 };

@@ -20,7 +20,7 @@ bool Patient_Record::underflow()
     return false;
     
 }
-
+// if there is limit for the stack
 bool Patient_Record::overflow()
 {
     cout << "the stack is full" << endl;
@@ -44,35 +44,34 @@ void Patient_Record::pushPatient(string name, string description, string categor
     }
     else
     {
-        newPatient->next = top;
+        newPatient->setNext(top);
         top = newPatient;
     }
 
     totalPatient++;
 }
 
-void Patient_Record::popPatient()
+Patient* Patient_Record::popPatient()
 {
-    if (top == nullptr)
+    if (underflow())
     {
         cout << "No patients to pop." << endl;
-        return;
+        return nullptr;
     }
-    Patient *temp = top;
-    top = top->next;
-    delete temp;
+    Patient *temp, *poppedNode;
+    temp = poppedNode = top;
+    top = top->getNext();
     totalPatient--;
+    delete temp;
+    return poppedNode;
 }
-
+// update by name
 void Patient_Record::updatePatient(string name)
 {
-}
 
+}
+// update by id
 void Patient_Record::updatePatient(int id)
-{
-}
-
-void Patient_Record::deletePatient()
 {
 }
 
@@ -86,27 +85,27 @@ void Patient_Record::display()
 
     Patient *current = top;
 
-    cout << totalPatient << endl;
-    cout << "Patients in Record:" << endl;
+    cout << endl << "Patients in Record:" << endl;
     cout << "===================" << endl;
     for(int i = 0; i < totalPatient; i++){
 
         cout << "Name: " << current->getName() << endl;
         cout << "Description: " << current->getDescription() << endl;
         cout << "Category: " << current->getCategory() << endl;
-        cout << "-------------------"; // Separator for clarity
+        cout << "Timestamp: " << current->getTimestamp() << endl;
+        cout << "-------------------"; 
         cout << endl;
-        current = current->next;
+        current = current->getNext();
     } 
 
 }
 
-Patient *Patient_Record::traverseLastNode()
-{
-    Patient *temp = top;
-    while (temp->next)
-    {
-        temp = temp->next;
-    }
-    return temp;
-}
+// Patient *Patient_Record::traverseLastNode()
+// {
+//     Patient *current = top;
+//     while (current->getNext())
+//     {
+//         current = current->getNext();
+//     }
+//     return current;
+// }
