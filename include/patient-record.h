@@ -3,22 +3,25 @@
 #include <string>
 #include "patient.h"
 
-class Patient_Record : Patient{
-    private: 
-    int totalPatient;
-    Patient* top;
-    public:
+class Patient_Record : public Patient
+{
 
-    ~Patient_Record(){};
-    void pushPatient();
+private:
+    Patient *top;
+    int totalPatient;
+
+public:
+    Patient_Record();
+    ~Patient_Record() {};
+    void pushPatient(std::string, std::string, std::string);
     void popPatient();
     void updatePatient(std::string name);
     void updatePatient(int id);
     void deletePatient();
-    Patient* traverseLastNode();
+    void display();
+    Patient *traverseLastNode();
     bool underflow();
     bool overflow();
-
 };
 
 #endif
