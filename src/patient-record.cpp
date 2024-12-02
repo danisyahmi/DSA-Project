@@ -68,6 +68,27 @@ Patient* Patient_Record::popPatient()
 // update by name
 void Patient_Record::updatePatient(string name)
 {
+    if(underflow()){
+        return;
+    }
+    int count = 0;
+    int idArr[count + 1] = {};
+    Patient *current = top;
+    for(int i = 0; i < totalPatient; i++){
+        if(current->getName() == name){
+            idArr[count] = current->getId();
+            count++; 
+        }
+    }
+    current = top;
+    int size = sizeof(idArr)/ sizeof(idArr[0]);
+    for(int i = 0; i < size ; i++){
+        for(int j = 0; j < totalPatient; j++){
+            if(current->getId() == idArr[i]){
+                cout << current->getName() << endl;
+            }
+        }
+    }
 
 }
 // update by id

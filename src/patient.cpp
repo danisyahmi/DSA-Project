@@ -5,6 +5,7 @@
 
 Patient::Patient()
 {
+    id += 1;
     next = nullptr;
     std::time_t now = std::time(nullptr);
     this->timestamp = *std::localtime(&now); // get localtime
@@ -36,6 +37,10 @@ std::string Patient::getTimestamp()
 Patient *Patient::getNext()
 {
     return next;
+}
+
+int Patient::getId(){
+    return id;
 }
 
 void Patient::setName(std::string name)

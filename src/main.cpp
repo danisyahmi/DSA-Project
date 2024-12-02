@@ -16,18 +16,19 @@ int main() {
 
     record.display();
 
-    record.popPatient();
-    record.display();
+    record.updatePatient("John Doe");
+    // record.popPatient();
+    // record.display();
     
-    record.popPatient();
-    record.display();
+    // record.popPatient();
+    // record.display();
 
-    record.popPatient();
-    record.popPatient();
-    record.popPatient();
+    // record.popPatient();
+    // record.popPatient();
+    // record.popPatient();
     
-    record.popPatient();
-    record.display();
+    // record.popPatient();
+    // record.display();
 
     return 0;
 }
