@@ -5,7 +5,6 @@
 
 Patient::Patient()
 {
-    id += 1;
     next = nullptr;
     std::time_t now = std::time(nullptr);
     this->timestamp = *std::localtime(&now); // get localtime
@@ -61,4 +60,8 @@ void Patient::setCategory(std::string category)
 void Patient::setNext(Patient *next)
 {
     this->next = next;
+}
+
+void Patient::setId(int id){
+    this->id = id;
 }

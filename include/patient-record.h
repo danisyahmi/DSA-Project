@@ -8,6 +8,7 @@ class Patient_Record : public Patient
 
 private:
     Patient *top;
+    int userId;
     int totalPatient;
 
 public:
@@ -18,6 +19,7 @@ public:
     void updatePatient(std::string name);
     void updatePatient(int id);
     void display();
+    void display(int[]);
     // Patient *traverseLastNode();
     bool underflow();
     bool overflow();

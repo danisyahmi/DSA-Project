@@ -6,11 +6,12 @@ using namespace std;
 Patient_Record::Patient_Record()
 {
     totalPatient = 0;
+    userId = 0;
 }
 
 bool Patient_Record::underflow()
 {
-    
+
     if (totalPatient == 0)
     {
         cout << endl
@@ -18,7 +19,6 @@ bool Patient_Record::underflow()
         return true;
     }
     return false;
-    
 }
 // if there is limit for the stack
 bool Patient_Record::overflow()
@@ -29,7 +29,10 @@ bool Patient_Record::overflow()
 
 void Patient_Record::pushPatient(string name, string description, string category)
 {
+    ++userId;
     Patient *newPatient = new Patient();
+
+    newPatient->setId(userId);
     newPatient->setName(name);
     newPatient->setDescription(description);
     newPatient->setCategory(category);
@@ -38,7 +41,7 @@ void Patient_Record::pushPatient(string name, string description, string categor
     // delete newPatient;
     //     return;
     // }
-    if (top == nullptr || underflow())
+    if (top == nullptr || this->underflow())
     {
         top = newPatient;
     }
@@ -51,9 +54,9 @@ void Patient_Record::pushPatient(string name, string description, string categor
     totalPatient++;
 }
 
-Patient* Patient_Record::popPatient()
+Patient *Patient_Record::popPatient()
 {
-    if (underflow())
+    if (this->underflow())
     {
         cout << "No patients to pop." << endl;
         return nullptr;
@@ -68,28 +71,35 @@ Patient* Patient_Record::popPatient()
 // update by name
 void Patient_Record::updatePatient(string name)
 {
-    if(underflow()){
+    if (this->underflow())
+    {
         return;
     }
     int count = 0;
-    int idArr[count + 1] = {};
+    int idArr[10] = {};
     Patient *current = top;
-    for(int i = 0; i < totalPatient; i++){
-        if(current->getName() == name){
+    for (int i = 0; i < totalPatient; i++)
+    {
+        if (current->getName() == name)
+        {
             idArr[count] = current->getId();
-            count++; 
+            count++;
         }
+        current = current->getNext();
     }
     current = top;
-    int size = sizeof(idArr)/ sizeof(idArr[0]);
-    for(int i = 0; i < size ; i++){
-        for(int j = 0; j < totalPatient; j++){
-            if(current->getId() == idArr[i]){
-                cout << current->getName() << endl;
+    for (int i = 0; i < count; i++)
+    {
+        for (int j = 0; j < totalPatient; j++)
+        {
+            if (current->getId() == idArr[i])
+            {
+                this->display(idArr);
+                break;
             }
+            current = current->getNext();
         }
     }
-
 }
 // update by id
 void Patient_Record::updatePatient(int id)
@@ -99,26 +109,63 @@ void Patient_Record::updatePatient(int id)
 void Patient_Record::display()
 {
 
-    if (underflow())
+    if (this->underflow())
     {
         return;
     }
 
     Patient *current = top;
 
-    cout << endl << "Patients in Record:" << endl;
+    cout << endl
+         << "Patients in Record:" << endl;
     cout << "===================" << endl;
-    for(int i = 0; i < totalPatient; i++){
-
+    for (int i = 0; i < totalPatient; i++)
+    {
+        cout << "ID: " << current->getId() << endl;
         cout << "Name: " << current->getName() << endl;
         cout << "Description: " << current->getDescription() << endl;
         cout << "Category: " << current->getCategory() << endl;
         cout << "Timestamp: " << current->getTimestamp() << endl;
-        cout << "-------------------"; 
+        cout << "-------------------";
         cout << endl;
         current = current->getNext();
-    } 
+    }
+}
 
+void Patient_Record::display(int userId[])
+{
+    if (this->underflow())
+    {
+        return;
+    }
+
+    Patient *current = top;
+
+    cout << endl
+         << "Search Found:" << endl;
+    cout << "===================" << endl;
+
+    // for (int i = 0; i < sizeof(userId) / 4; i++) {
+    //     cout << userId[i] << endl;
+    // }
+    for (int i = 0; i < totalPatient; i++)
+    {
+        // this loop is to compare current with whole array
+        for (int j = 0; j < sizeof(userId) / 4; j++)
+        {
+            if (current->getId() == userId[j])
+            {
+                cout << "ID: " << current->getId() << endl;
+                cout << "Name: " << current->getName() << endl;
+                cout << "Description: " << current->getDescription() << endl;
+                cout << "Category: " << current->getCategory() << endl;
+                cout << "Timestamp: " << current->getTimestamp() << endl;
+                cout << "-------------------";
+                cout << endl;
+            }
+        }
+        current = current->getNext();
+    }
 }
 
 // Patient *Patient_Record::traverseLastNode()

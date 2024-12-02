@@ -12,11 +12,15 @@ int main() {
     record.pushPatient("Jane Smith", "Headache and nausea", "General");
     record.pushPatient("Alice Johnson", "Routine check-up", "Preventive");
     record.pushPatient("Bob Brown", "High blood pressure", "Chronic");
+    record.pushPatient("Bob Brown", "High blood pressure", "Not Chronic");
     record.pushPatient("Charlie Davis", "Allergy symptoms", "General");
 
-    record.display();
+    // record.display();
 
     record.updatePatient("John Doe");
+    record.updatePatient("Jane Smith");
+    record.updatePatient("Bob Brown");
+    record.updatePatient("Bob Brown");
     // record.popPatient();
     // record.display();
     
