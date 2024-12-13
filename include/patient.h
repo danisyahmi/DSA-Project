@@ -6,7 +6,7 @@
 
 class Patient{
     private:
-    int id;
+    int id; 
     std::string name;
     std::string description;
     std::string category;
@@ -23,6 +23,8 @@ class Patient{
     void setDescription(std::string);
     void setCategory(std::string);
     void setNext(Patient*);
+    void setId(int);
+    int getId();
     std::string getName();
     std::string getDescription();
     std::string getCategory();

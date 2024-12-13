@@ -38,6 +38,10 @@ Patient *Patient::getNext()
     return next;
 }
 
+int Patient::getId(){
+    return id;
+}
+
 void Patient::setName(std::string name)
 {
     this->name = name;
@@ -56,4 +60,8 @@ void Patient::setCategory(std::string category)
 void Patient::setNext(Patient *next)
 {
     this->next = next;
+}
+
+void Patient::setId(int id){
+    this->id = id;
 }
