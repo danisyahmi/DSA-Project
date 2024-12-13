@@ -6,7 +6,7 @@
 
 class Patient{
     private:
-    int id;
+    int id; 
     std::string name;
     std::string description;
     std::string category;

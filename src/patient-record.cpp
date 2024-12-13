@@ -2,13 +2,15 @@
 #include "patient-record.h"
 
 using namespace std;
+int idArr[10] = {}; // selected id, get by find
 
+// constructor
 Patient_Record::Patient_Record()
 {
     totalPatient = 0;
     userId = 0;
 }
-
+// if stack is empty
 bool Patient_Record::underflow()
 {
 
@@ -24,9 +26,9 @@ bool Patient_Record::underflow()
 bool Patient_Record::overflow()
 {
     cout << "the stack is full" << endl;
-    return true;
+    return false;
 }
-
+// push element into stack
 void Patient_Record::pushPatient(string name, string description, string category)
 {
     ++userId;
@@ -41,19 +43,12 @@ void Patient_Record::pushPatient(string name, string description, string categor
     // delete newPatient;
     //     return;
     // }
-    if (top == nullptr || this->underflow())
-    {
-        top = newPatient;
-    }
-    else
-    {
-        newPatient->setNext(top);
-        top = newPatient;
-    }
 
+    newPatient->setNext(top);
+    top = newPatient;
     totalPatient++;
 }
-
+// pop top element
 Patient *Patient_Record::popPatient()
 {
     if (this->underflow())
@@ -68,16 +63,31 @@ Patient *Patient_Record::popPatient()
     delete temp;
     return poppedNode;
 }
-// update by name
-void Patient_Record::updatePatient(string name)
+// search by id
+Patient Patient_Record::search(int id)
 {
+    current = top;
+    for (int i = 0; i < totalPatient; i++)
+    {
+        if (current->getId() == id)
+        {
+            return *current;
+        }
+        current = current->getNext();
+    }
+    current = nullptr;
+    return *current;
+}
+// search by name
+int *Patient_Record::search(const string name)
+{
+    current = top;
     if (this->underflow())
     {
-        return;
+        current = nullptr;
     }
+
     int count = 0;
-    int idArr[10] = {};
-    Patient *current = top;
     for (int i = 0; i < totalPatient; i++)
     {
         if (current->getName() == name)
@@ -94,27 +104,26 @@ void Patient_Record::updatePatient(string name)
         {
             if (current->getId() == idArr[i])
             {
-                this->display(idArr);
                 break;
             }
             current = current->getNext();
         }
     }
+    return idArr; // found array
 }
 // update by id
-void Patient_Record::updatePatient(int id)
+void Patient_Record::updatePatient()
 {
 }
-
+// display all
 void Patient_Record::display()
 {
-
     if (this->underflow())
     {
         return;
     }
 
-    Patient *current = top;
+    current = top;
 
     cout << endl
          << "Patients in Record:" << endl;
@@ -131,7 +140,7 @@ void Patient_Record::display()
         current = current->getNext();
     }
 }
-
+// display by selected id
 void Patient_Record::display(int userId[])
 {
     if (this->underflow())
@@ -139,19 +148,17 @@ void Patient_Record::display(int userId[])
         return;
     }
 
-    Patient *current = top;
+    current = top;
 
     cout << endl
          << "Search Found:" << endl;
     cout << "===================" << endl;
 
-    // for (int i = 0; i < sizeof(userId) / 4; i++) {
-    //     cout << userId[i] << endl;
-    // }
+    int size = sizeof(userId) / sizeof(userId[0]);
     for (int i = 0; i < totalPatient; i++)
     {
         // this loop is to compare current with whole array
-        for (int j = 0; j < sizeof(userId) / 4; j++)
+        for (int j = 0; j < size; j++)
         {
             if (current->getId() == userId[j])
             {
@@ -167,13 +174,27 @@ void Patient_Record::display(int userId[])
         current = current->getNext();
     }
 }
-
-// Patient *Patient_Record::traverseLastNode()
-// {
-//     Patient *current = top;
-//     while (current->getNext())
-//     {
-//         current = current->getNext();
-//     }
-//     return current;
-// }
+// display by id 
+void Patient_Record::display(Patient patient)
+{
+    cout << endl
+         << "Search Found:" << endl;
+    cout << "===================" << endl;
+    cout << "ID: " << patient.getId()<< endl;
+    cout << "Name: " << patient.getName() << endl;
+    cout << "Description: " << patient.getDescription() << endl;
+    cout << "Category: " << patient.getCategory() << endl;
+    cout << "Timestamp: " << patient.getTimestamp() << endl;
+    cout << "-------------------";
+    cout << endl;
+}
+// get last element
+Patient *Patient_Record::traverseLastNode()
+{
+    current = top;
+    for (int i = 0; i < totalPatient; i++)
+    {
+        current = current->getNext();
+    }
+    return current;
+}

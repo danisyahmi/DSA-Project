@@ -12,15 +12,18 @@ private:
     int totalPatient;
 
 public:
+    Patient *current;
     Patient_Record();
     ~Patient_Record() {};
     void pushPatient(std::string, std::string, std::string);
     Patient* popPatient();
-    void updatePatient(std::string name);
-    void updatePatient(int id);
+    Patient search(int);
+    int* search(const std::string);
+    void updatePatient();
     void display();
     void display(int[]);
-    // Patient *traverseLastNode();
+    void display(Patient);
+    Patient *traverseLastNode();
     bool underflow();
     bool overflow();
 };

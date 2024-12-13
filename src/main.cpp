@@ -6,6 +6,8 @@
 using namespace std;
 
 int main() {
+    int* sorted;
+    Patient patient;
     Patient_Record record;
     
     record.pushPatient("John Doe", "Flu symptoms", "General");
@@ -17,22 +19,15 @@ int main() {
 
     // record.display();
 
-    record.updatePatient("John Doe");
-    record.updatePatient("Jane Smith");
-    record.updatePatient("Bob Brown");
-    record.updatePatient("Bob Brown");
-    // record.popPatient();
-    // record.display();
-    
-    // record.popPatient();
-    // record.display();
-
-    // record.popPatient();
-    // record.popPatient();
-    // record.popPatient();
-    
-    // record.popPatient();
-    // record.display();
-
+    sorted = record.search("John Doe");
+    record.display(sorted);
+    sorted = record.search("Jane Smith");
+    record.display(sorted);
+    sorted = record.search("Bob Brown");
+    sorted = record.search("Bob Brown");
+    record.display(sorted);
+    patient = record.search(1);
+    record.display(patient);
+ 
     return 0;
 }
