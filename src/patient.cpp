@@ -55,7 +55,7 @@ void Patient::setDescription(std::string description)
 void Patient::setCategory(std::string category)
 {
     this->category = category;
-}
+}           
 
 void Patient::setNext(Patient *next)
 {

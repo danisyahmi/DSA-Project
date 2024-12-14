@@ -3,9 +3,8 @@
 #include <string>
 #include "patient.h"
 
-class Patient_Record : public Patient
+class Patient_Record
 {
-
 private:
     Patient *top;
     int userId;
@@ -19,9 +18,9 @@ public:
     Patient* popPatient();
     Patient search(int);
     int* search(const std::string);
-    void updatePatient();
+    void updatePatient(Patient&);
     void display();
-    void display(int[]);
+    void display(int*);
     void display(Patient);
     Patient *traverseLastNode();
     bool underflow();

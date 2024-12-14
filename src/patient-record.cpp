@@ -1,8 +1,9 @@
 #include <iostream>
+#include <limits>
 #include "patient-record.h"
 
 using namespace std;
-int idArr[10] = {}; // selected id, get by find
+int idArr[10] = {}; // selected id, get by find id
 
 // constructor
 Patient_Record::Patient_Record()
@@ -79,18 +80,17 @@ Patient Patient_Record::search(int id)
     return *current;
 }
 // search by name
-int *Patient_Record::search(const string name)
+int *Patient_Record::search(const string searchedItem)
 {
     current = top;
     if (this->underflow())
     {
         current = nullptr;
     }
-
     int count = 0;
     for (int i = 0; i < totalPatient; i++)
     {
-        if (current->getName() == name)
+        if (current->getName() == searchedItem || current->getCategory() == searchedItem)
         {
             idArr[count] = current->getId();
             count++;
@@ -112,8 +112,82 @@ int *Patient_Record::search(const string name)
     return idArr; // found array
 }
 // update by id
-void Patient_Record::updatePatient()
-{
+void Patient_Record::updatePatient(Patient &patient)
+{    string name, category, description;
+    string categoryChoice[] = {
+        "General",    // For common or unspecified conditions
+        "Chronic",    // For long-term medical conditions
+        "Acute",      // For urgent or severe but short-term conditions
+        "Preventive", // For routine check-ups or preventive care
+        "Palliative"  // For comfort-focused care in terminal conditions
+    };
+    int choice;
+
+    cout << "\nWhat would you like to change?\n";
+    cout << "1. Name\n2. Description\n3. Category\n";
+    cout << "Enter your choice: ";
+    cin >> choice;
+
+    switch (choice)
+    {
+    case 1:
+        cout << "\nEnter new name: ";
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        getline(cin, name);
+        patient.setName(name);
+        break;
+
+    case 2:
+        cout << "\nEnter new description: ";
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        getline(cin, description);
+        patient.setDescription(description);
+        break;
+
+    case 3:
+        int size = 5;
+
+        while (true)
+        {
+            cout << "\n============================\n";
+            cout << "   Select a New Category   \n";
+            cout << "============================\n";
+
+            for (int i = 0; i < 5; i++)
+            {
+                cout << "[" << i + 1 << "] " << categoryChoice[i] << "\n";
+            }
+
+            cout << "\nEnter your choice (1-" << size << "): ";
+
+            cin.clear();
+            cin.ignore();
+            cin >> choice;
+            choice = choice -1;
+            if (cin.fail() || choice < 1 || choice > size)
+            {
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Ignore the rest of the line
+                cout << "\nInvalid input. Please try again.\n";
+            }
+            else
+            {
+                category = categoryChoice[choice]; // Adjust for zero-based index
+
+                cout << "\nYou selected: " << category << "\n";
+                patient.setCategory(category);
+                break; // Exit the loop
+            }
+        }
+        category = categoryChoice[choice];
+        patient.setCategory(category);
+        break;
+
+        // default:
+        //     break;
+    }
 }
 // display all
 void Patient_Record::display()
@@ -141,7 +215,7 @@ void Patient_Record::display()
     }
 }
 // display by selected id
-void Patient_Record::display(int userId[])
+void Patient_Record::display(int *userId)
 {
     if (this->underflow())
     {
@@ -154,7 +228,7 @@ void Patient_Record::display(int userId[])
          << "Search Found:" << endl;
     cout << "===================" << endl;
 
-    int size = sizeof(userId) / sizeof(userId[0]);
+    int size = sizeof(userId) / 4; // /4 cause sizeof() will return size in byte
     for (int i = 0; i < totalPatient; i++)
     {
         // this loop is to compare current with whole array
@@ -174,13 +248,13 @@ void Patient_Record::display(int userId[])
         current = current->getNext();
     }
 }
-// display by id 
+// display by id
 void Patient_Record::display(Patient patient)
 {
     cout << endl
          << "Search Found:" << endl;
     cout << "===================" << endl;
-    cout << "ID: " << patient.getId()<< endl;
+    cout << "ID: " << patient.getId() << endl;
     cout << "Name: " << patient.getName() << endl;
     cout << "Description: " << patient.getDescription() << endl;
     cout << "Category: " << patient.getCategory() << endl;

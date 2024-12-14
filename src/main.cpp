@@ -24,10 +24,15 @@ int main() {
     sorted = record.search("Jane Smith");
     record.display(sorted);
     sorted = record.search("Bob Brown");
-    sorted = record.search("Bob Brown");
     record.display(sorted);
-    patient = record.search(1);
+    sorted = record.search("General");
+    record.display(sorted);
+    patient = record.search(3);
     record.display(patient);
+    record.updatePatient(patient);
+    record.display(patient);
+
+    
  
     return 0;
 }

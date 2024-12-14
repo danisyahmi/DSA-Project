@@ -11,7 +11,7 @@ class Patient{
     std::string description;
     std::string category;
     std::tm timestamp;
-    int appointmentDay, appointmentMonth; // use ctime library to create timestamp
+    std::tm apppoinment;
     
     protected:
     Patient* next;
