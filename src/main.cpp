@@ -7,7 +7,7 @@ using namespace std;
 
 int main() {
     int* sorted;
-    Patient patient;
+    Patient *patient;
     Patient_Record record;
     
     record.pushPatient("John Doe", "Flu symptoms", "General");
@@ -31,6 +31,7 @@ int main() {
     record.display(patient);
     record.updatePatient(patient);
     record.display(patient);
+    record.display();
 
     
  
