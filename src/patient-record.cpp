@@ -73,12 +73,10 @@ Patient *Patient_Record::search(int id)
         if (current->getId() == id)
         {
             return current;
-            return current;
         }
         current = current->getNext();
     }
     current = nullptr;
-    return current;
     return current;
 }
 // search by name
@@ -278,12 +276,7 @@ void Patient_Record::display(Patient *patient)
     cout << "Description: " << patient->getDescription() << endl;
     cout << "Category: " << patient->getCategory() << endl;
     cout << "Timestamp: " << patient->getTimestamp() << endl;
-    cout << "ID: " << patient->getId() << endl;
-    cout << "Name: " << patient->getName() << endl;
-    cout << "Description: " << patient->getDescription() << endl;
-    cout << "Category: " << patient->getCategory() << endl;
-    cout << "Timestamp: " << patient->getTimestamp() << endl;
-    cout << "-------------------";
+    cout << "===================" << endl;
     cout << endl;
 }
 // get last element

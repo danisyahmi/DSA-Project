@@ -22,6 +22,39 @@ int main()
     Patient *patientToUpdate = nullptr; // Declare patientToUpdate here
     Patient *poppedPatient = nullptr;   // Declare poppedPatient here
 
+    //----------------------------------------------------------------------------------------------------------
+    // Adding 20 dummy patient records for testing
+    for (int i = 1; i <= 20; ++i)
+    {
+        string name = "Patient " + to_string(i);
+        string description = "Description for patient " + to_string(i);
+        string category;
+
+        // Assign categories in a round-robin fashion
+        switch (i % 5)
+        {
+        case 1:
+            category = "General";
+            break;
+        case 2:
+            category = "Chronic";
+            break;
+        case 3:
+            category = "Acute";
+            break;
+        case 4:
+            category = "Preventive";
+            break;
+        case 0:
+            category = "Palliative";
+            break;
+        }
+
+        patientRecord.pushPatient(name, description, category);
+    }
+    cout << "20 dummy patients added successfully.\n";
+    //----------------------------------------------------------------------------------------------------------
+
     do
     {
         cout << "\nPatient Record System\n";
