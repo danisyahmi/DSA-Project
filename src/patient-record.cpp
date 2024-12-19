@@ -3,7 +3,7 @@
 #include "patient-record.h"
 
 using namespace std;
-int idArr[10] = {}; // selected id, get by find id
+int idArr[100] = {}; // selected id, get by find id
 
 // constructor
 Patient_Record::Patient_Record()
@@ -65,19 +65,19 @@ Patient *Patient_Record::popPatient()
     return poppedNode;
 }
 // search by id
-Patient Patient_Record::search(int id)
+Patient *Patient_Record::search(int id)
 {
     current = top;
     for (int i = 0; i < totalPatient; i++)
     {
         if (current->getId() == id)
         {
-            return *current;
+            return current;
         }
         current = current->getNext();
     }
     current = nullptr;
-    return *current;
+    return current;
 }
 // search by name
 int *Patient_Record::search(const string searchedItem)
@@ -112,14 +112,8 @@ int *Patient_Record::search(const string searchedItem)
     return idArr; // found array
 }
 // update by id
-<<<<<<< Updated upstream
-void Patient_Record::updatePatient(Patient &patient)
-{    string name, category, description;
-=======
 void Patient_Record::updatePatient(Patient *patient)
-{   
-    string name, category, description;
->>>>>>> Stashed changes
+{    string name, category, description;
     string categoryChoice[] = {
         "General",    // For common or unspecified conditions
         "Chronic",    // For long-term medical conditions
@@ -130,7 +124,7 @@ void Patient_Record::updatePatient(Patient *patient)
     int choice;
 
     cout << "\nWhat would you like to change?\n";
-    cout << "1. Name\n2. Description\n3. Category\n";
+    cout << "1. Name\n2. Description\n3. Category\n4. Return\n";
     cout << "Enter your choice: ";
     cin >> choice;
 
@@ -141,7 +135,7 @@ void Patient_Record::updatePatient(Patient *patient)
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
         getline(cin, name);
-        patient.setName(name);
+        patient->setName(name);
         break;
 
     case 2:
@@ -149,7 +143,7 @@ void Patient_Record::updatePatient(Patient *patient)
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
         getline(cin, description);
-        patient.setDescription(description);
+        patient->setDescription(description);
         break;
 
     case 3:
@@ -161,7 +155,7 @@ void Patient_Record::updatePatient(Patient *patient)
             cout << "   Select a New Category   \n";
             cout << "============================\n";
 
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < size; i++)
             {
                 cout << "[" << i + 1 << "] " << categoryChoice[i] << "\n";
             }
@@ -183,29 +177,26 @@ void Patient_Record::updatePatient(Patient *patient)
                 category = categoryChoice[choice]; // Adjust for zero-based index
 
                 cout << "\nYou selected: " << category << "\n";
-                patient.setCategory(category);
+                patient->setCategory(category);
                 break; // Exit the loop
             }
         }
         category = categoryChoice[choice];
-        patient.setCategory(category);
+        patient->setCategory(category);
         break;
 
         // default:
         //     break;
     }
 }
-<<<<<<< Updated upstream
-=======
 // sort all
 int *Patient_Record::sortAsc(){
-    return nullptr;
+    
 }
 // sort selected id in array
 int *Patient_Record::sortAsc(int *userid){
-    return nullptr;
+    // choose 1 sorting method
 }
->>>>>>> Stashed changes
 // display all
 void Patient_Record::display()
 {
@@ -266,16 +257,16 @@ void Patient_Record::display(int *userId)
     }
 }
 // display by id
-void Patient_Record::display(Patient patient)
+void Patient_Record::display(Patient* patient)
 {
     cout << endl
          << "Search Found:" << endl;
     cout << "===================" << endl;
-    cout << "ID: " << patient.getId() << endl;
-    cout << "Name: " << patient.getName() << endl;
-    cout << "Description: " << patient.getDescription() << endl;
-    cout << "Category: " << patient.getCategory() << endl;
-    cout << "Timestamp: " << patient.getTimestamp() << endl;
+    cout << "ID: " << patient->getId() << endl;
+    cout << "Name: " << patient->getName() << endl;
+    cout << "Description: " << patient->getDescription() << endl;
+    cout << "Category: " << patient->getCategory() << endl;
+    cout << "Timestamp: " << patient->getTimestamp() << endl;
     cout << "-------------------";
     cout << endl;
 }
