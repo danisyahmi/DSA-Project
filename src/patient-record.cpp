@@ -30,7 +30,7 @@ bool Patient_Record::overflow()
     return false;
 }
 // push element into stack
-void Patient_Record::pushPatient(string name, string description, string category)
+void Patient_Record::pushPatient(string name, string description, string category) // plainning to change this to normal linked list
 {
     ++userId;
     Patient *newPatient = new Patient();
@@ -112,8 +112,14 @@ int *Patient_Record::search(const string searchedItem)
     return idArr; // found array
 }
 // update by id
+<<<<<<< Updated upstream
 void Patient_Record::updatePatient(Patient &patient)
 {    string name, category, description;
+=======
+void Patient_Record::updatePatient(Patient *patient)
+{   
+    string name, category, description;
+>>>>>>> Stashed changes
     string categoryChoice[] = {
         "General",    // For common or unspecified conditions
         "Chronic",    // For long-term medical conditions
@@ -189,6 +195,17 @@ void Patient_Record::updatePatient(Patient &patient)
         //     break;
     }
 }
+<<<<<<< Updated upstream
+=======
+// sort all
+int *Patient_Record::sortAsc(){
+    return nullptr;
+}
+// sort selected id in array
+int *Patient_Record::sortAsc(int *userid){
+    return nullptr;
+}
+>>>>>>> Stashed changes
 // display all
 void Patient_Record::display()
 {

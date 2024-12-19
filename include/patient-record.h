@@ -1,8 +1,8 @@
 #ifndef PATIENT_RECORD_H
 #define PATIENT_RECORD_H
 #include <string>
+#include <fstream>
 #include "patient.h"
-
 class Patient_Record
 {
 private:
