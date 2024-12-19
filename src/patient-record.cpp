@@ -30,7 +30,7 @@ bool Patient_Record::overflow()
     return false;
 }
 // push element into stack
-void Patient_Record::pushPatient(string name, string description, string category)
+void Patient_Record::pushPatient(string name, string description, string category) // plainning to change this to normal linked list
 {
     ++userId;
     Patient *newPatient = new Patient();
@@ -73,10 +73,12 @@ Patient *Patient_Record::search(int id)
         if (current->getId() == id)
         {
             return current;
+            return current;
         }
         current = current->getNext();
     }
     current = nullptr;
+    return current;
     return current;
 }
 // search by name
@@ -113,7 +115,8 @@ int *Patient_Record::search(const string searchedItem)
 }
 // update by id
 void Patient_Record::updatePatient(Patient *patient)
-{    string name, category, description;
+{
+    string name, category, description;
     string categoryChoice[] = {
         "General",    // For common or unspecified conditions
         "Chronic",    // For long-term medical conditions
@@ -124,6 +127,7 @@ void Patient_Record::updatePatient(Patient *patient)
     int choice;
 
     cout << "\nWhat would you like to change?\n";
+    cout << "1. Name\n2. Description\n3. Category\n4. Return\n";
     cout << "1. Name\n2. Description\n3. Category\n4. Return\n";
     cout << "Enter your choice: ";
     cin >> choice;
@@ -136,6 +140,7 @@ void Patient_Record::updatePatient(Patient *patient)
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
         getline(cin, name);
         patient->setName(name);
+        patient->setName(name);
         break;
 
     case 2:
@@ -143,6 +148,7 @@ void Patient_Record::updatePatient(Patient *patient)
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
         getline(cin, description);
+        patient->setDescription(description);
         patient->setDescription(description);
         break;
 
@@ -156,16 +162,17 @@ void Patient_Record::updatePatient(Patient *patient)
             cout << "============================\n";
 
             for (int i = 0; i < size; i++)
-            {
-                cout << "[" << i + 1 << "] " << categoryChoice[i] << "\n";
-            }
+                for (int i = 0; i < size; i++)
+                {
+                    cout << "[" << i + 1 << "] " << categoryChoice[i] << "\n";
+                }
 
             cout << "\nEnter your choice (1-" << size << "): ";
 
             cin.clear();
             cin.ignore();
             cin >> choice;
-            choice = choice -1;
+            choice = choice - 1;
             if (cin.fail() || choice < 1 || choice > size)
             {
                 cin.clear();
@@ -178,10 +185,12 @@ void Patient_Record::updatePatient(Patient *patient)
 
                 cout << "\nYou selected: " << category << "\n";
                 patient->setCategory(category);
+                patient->setCategory(category);
                 break; // Exit the loop
             }
         }
         category = categoryChoice[choice];
+        patient->setCategory(category);
         patient->setCategory(category);
         break;
 
@@ -190,12 +199,14 @@ void Patient_Record::updatePatient(Patient *patient)
     }
 }
 // sort all
-int *Patient_Record::sortAsc(){
-    
+int *Patient_Record::sortAsc()
+{
+    return nullptr;
 }
 // sort selected id in array
-int *Patient_Record::sortAsc(int *userid){
-    
+int *Patient_Record::sortAsc(int *userid)
+{
+    return nullptr;
 }
 // display all
 void Patient_Record::display()
@@ -257,11 +268,16 @@ void Patient_Record::display(int *userId)
     }
 }
 // display by id
-void Patient_Record::display(Patient* patient)
+void Patient_Record::display(Patient *patient)
 {
     cout << endl
          << "Search Found:" << endl;
     cout << "===================" << endl;
+    cout << "ID: " << patient->getId() << endl;
+    cout << "Name: " << patient->getName() << endl;
+    cout << "Description: " << patient->getDescription() << endl;
+    cout << "Category: " << patient->getCategory() << endl;
+    cout << "Timestamp: " << patient->getTimestamp() << endl;
     cout << "ID: " << patient->getId() << endl;
     cout << "Name: " << patient->getName() << endl;
     cout << "Description: " << patient->getDescription() << endl;
