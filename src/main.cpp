@@ -24,7 +24,8 @@ int main()
 
     do
     {
-        cout << "\nPatient Record System\n";
+        cout << "\n=====================\n";
+        cout << " Patient Record System \n";
         cout << "=====================\n";
         cout << "1. Add Patient\n";
         cout << "2. Search Patient by ID\n";
@@ -33,6 +34,7 @@ int main()
         cout << "5. Display All Patients\n";
         cout << "6. Pop Patient\n";
         cout << "7. Exit\n";
+        cout << "=====================\n";
         cout << "Enter your choice: ";
         cin >> choice;
 
@@ -44,12 +46,20 @@ int main()
             getline(cin, name);
             cout << "Enter patient description: ";
             getline(cin, description);
-            cout << "Enter patient category: \n";
+            cout << "Select patient category:\n";
             for (int i = 0; i < 5; i++)
             {
                 cout << "[" << i + 1 << "] " << categoryChoice[i] << "\n";
             }
+            cout << "Enter your choice (1-5): ";
             cin >> choice;
+
+            // Validate category choice
+            if (choice < 1 || choice > 5) {
+                cout << "Invalid category choice. Please try again.\n";
+                break;
+            }
+
             category = categoryChoice[choice - 1]; // Adjust for zero-based index
             patientRecord.pushPatient(name, description, category);
             cout << "Patient added successfully.\n";
@@ -104,10 +114,14 @@ int main()
                 cout << "Popped Patient ID: " << poppedPatient->getId() << endl;
                 delete poppedPatient; // Free the memory
             }
+            else
+            {
+                cout << "No patients to pop.\n";
+            }
             break;
 
         case 7: // Exit
-            cout << "Exiting the system.\n";
+            cout << "Exiting the system. Thank you!\n";
             break;
 
         default:
