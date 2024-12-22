@@ -57,11 +57,10 @@ Patient *Patient_Record::popPatient()
         cout << "No patients to pop." << endl;
         return nullptr;
     }
-    Patient *temp, *poppedNode;
-    temp = poppedNode = top;
+    Patient *poppedNode;
+    poppedNode = top;
     top = top->getNext();
     totalPatient--;
-    delete temp;
     return poppedNode;
 }
 // search by id
@@ -190,13 +189,13 @@ void Patient_Record::updatePatient(Patient *patient)
     }
 }
 // sort all
-int *Patient_Record::sortAsc(){
+// int *Patient_Record::sortAsc(){
     
-}
-// sort selected id in array
-int *Patient_Record::sortAsc(int *userid){
-    // choose 1 sorting method
-}
+// }
+// // sort selected id in array
+// int *Patient_Record::sortAsc(int *userid){
+//     // choose 1 sorting method
+// }
 // display all
 void Patient_Record::display()
 {
@@ -271,7 +270,7 @@ void Patient_Record::display(Patient* patient)
     cout << endl;
 }
 // get last element
-Patient *Patient_Record::traverseLastNode()
+Patient* Patient_Record::traverseLastNode()
 {
     current = top;
     for (int i = 0; i < totalPatient; i++)
@@ -279,4 +278,39 @@ Patient *Patient_Record::traverseLastNode()
         current = current->getNext();
     }
     return current;
+}
+ 
+void Patient_Record::printToFile(Patient* patient){
+    ofstream fout;
+    // string fileName;
+    // cout << "\nPlease enter file name you want to print in : ";
+    // getline(cin, fileName);
+    fout.open("output.txt");
+
+    fout << patient->getId() << endl;
+    fout << patient->getName() << endl;
+    fout << patient->getDescription() << endl;
+    fout << patient->getCategory() << endl;
+    fout << patient->getTimestamp() << endl;
+
+    fout.close();
+}
+void Patient_Record::getFromFile(){
+    ifstream fin;
+    string fileName, name, description, category, timestamp;
+    int id;
+
+    // cout << "\nPlease enter file name you want to print in : ";
+    // getline(cin, fileName);
+    fin.open("input.txt");
+    
+    while (fin >> id >> name >> description >> category)
+    { 
+        // fin >> id >> name >> description >> category >> timestamp;  
+        continue;
+    }
+    
+    fin.close();
+    this->pushPatient(name , description , category);
+    cout << "\nNew Patient Created\n";
 }

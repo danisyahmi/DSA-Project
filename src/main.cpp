@@ -21,6 +21,7 @@ int main()
     int *foundIds = nullptr;            // Declare foundIds here
     Patient *patientToUpdate = nullptr; // Declare patientToUpdate here
     Patient *poppedPatient = nullptr;   // Declare poppedPatient here
+    Patient *patientToPrint = nullptr;
 
     do
     {
@@ -33,7 +34,9 @@ int main()
         cout << "4. Update Patient\n";
         cout << "5. Display All Patients\n";
         cout << "6. Pop Patient\n";
-        cout << "7. Exit\n";
+        cout << "7. Print Patient to File\n"; // New option
+        cout << "8. Get Patient from File\n"; // New option
+        cout << "9. Exit\n";
         cout << "=====================\n";
         cout << "Enter your choice: ";
         cin >> choice;
@@ -55,7 +58,8 @@ int main()
             cin >> choice;
 
             // Validate category choice
-            if (choice < 1 || choice > 5) {
+            if (choice < 1 || choice > 5)
+            {
                 cout << "Invalid category choice. Please try again.\n";
                 break;
             }
@@ -112,7 +116,7 @@ int main()
             if (poppedPatient)
             {
                 cout << "Popped Patient ID: " << poppedPatient->getId() << endl;
-                delete poppedPatient; // Free the memory
+                delete poppedPatient;
             }
             else
             {
@@ -120,7 +124,26 @@ int main()
             }
             break;
 
-        case 7: // Exit
+        case 7: // Print Patient to File
+            cout << "Enter patient ID to print to file: ";
+            cin >> id;
+            patientToPrint = patientRecord.search(id);
+            if (patientToPrint)
+            {
+                patientRecord.printToFile(patientToPrint);
+                cout << "Patient record printed to file successfully.\n";
+            }
+            else
+            {
+                cout << "Patient not found.\n";
+            }
+            break;
+
+        case 8: // Get Patient from File
+            patientRecord.getFromFile();
+            break;
+
+        case 9: // Exit
             cout << "Exiting the system. Thank you!\n";
             break;
 
@@ -128,7 +151,7 @@ int main()
             cout << "Invalid choice. Please try again.\n";
             break;
         }
-    } while (choice != 7);
+    } while (choice != 9);
 
     return 0;
 }
