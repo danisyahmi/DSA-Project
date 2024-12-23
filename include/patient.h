@@ -24,11 +24,13 @@ class Patient{
     void setCategory(std::string);
     void setNext(Patient*);
     void setId(int);
+    void setTimestamp(std::tm);
     int getId();
     std::string getName();
     std::string getDescription();
     std::string getCategory();
-    std::string getTimestamp();
+    std::tm getTimestamp();
+    std::string timestampToString();
     Patient* getNext();
 
 };
