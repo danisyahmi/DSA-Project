@@ -24,10 +24,33 @@ int main()
 
     //----------------------------------------------------------------------------------------------------------
     // Adding 20 dummy patient records for testing
-    for (int i = 1; i <= 20; ++i)
+    string dummyNames[20] = {
+    "Charlie",
+    "Diana",
+    "Ethan",
+    "George",
+    "Hanna",
+    "Fiona",
+    "Alice",
+    "Kevin",
+    "Isaac",
+    "Michael",
+    "Bob",
+    "Julia",
+    "Paula",
+    "Nina",
+    "Laura",
+    "Oliver",
+    "Rachel",
+    "Quentin",
+    "Samuel",
+    "Tina"
+    };
+    for (int i = 1; i < 5; ++i)
     {
-        string name = "Patient " + to_string(i);
-        string description = "Description for patient " + to_string(i);
+        
+        string name = "Patient " + dummyNames[i];
+        string description = "Description for patient " + dummyNames[i];
         string category;
 
         // Assign categories in a round-robin fashion
@@ -51,13 +74,15 @@ int main()
         }
 
         patientRecord.pushPatient(name, description, category);
+        
     }
     cout << "20 dummy patients added successfully.\n";
     //----------------------------------------------------------------------------------------------------------
 
     do
     {
-        cout << "\nPatient Record System\n";
+       cout << "\n=====================\n";
+        cout << " Patient Record System \n";
         cout << "=====================\n";
         cout << "1. Add Patient\n";
         cout << "2. Search Patient by ID\n";
@@ -65,7 +90,9 @@ int main()
         cout << "4. Update Patient\n";
         cout << "5. Display All Patients\n";
         cout << "6. Pop Patient\n";
-        cout << "7. Exit\n";
+        cout << "7. Sort Patients by Name\n";
+        cout << "8. Exit\n";
+        cout << "=====================\n";
         cout << "Enter your choice: ";
         cin >> choice;
 
@@ -139,15 +166,20 @@ int main()
             }
             break;
 
-        case 7: // Exit
-            cout << "Exiting the system.\n";
+        case 7: // Sort Patients by Name
+            patientRecord.sortByName(); 
+            cout << "Patients sorted by name successfully.\n";
+            break;
+
+        case 8: // Exit
+            cout << "Exiting the system. Thank you!\n";
             break;
 
         default:
             cout << "Invalid choice. Please try again.\n";
             break;
         }
-    } while (choice != 7);
+    } while (choice != 8);
 
     return 0;
 }

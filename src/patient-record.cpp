@@ -126,7 +126,6 @@ void Patient_Record::updatePatient(Patient *patient)
 
     cout << "\nWhat would you like to change?\n";
     cout << "1. Name\n2. Description\n3. Category\n4. Return\n";
-    cout << "1. Name\n2. Description\n3. Category\n4. Return\n";
     cout << "Enter your choice: ";
     cin >> choice;
 
@@ -138,7 +137,6 @@ void Patient_Record::updatePatient(Patient *patient)
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
         getline(cin, name);
         patient->setName(name);
-        patient->setName(name);
         break;
 
     case 2:
@@ -146,7 +144,6 @@ void Patient_Record::updatePatient(Patient *patient)
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
         getline(cin, description);
-        patient->setDescription(description);
         patient->setDescription(description);
         break;
 
@@ -160,10 +157,9 @@ void Patient_Record::updatePatient(Patient *patient)
             cout << "============================\n";
 
             for (int i = 0; i < size; i++)
-                for (int i = 0; i < size; i++)
-                {
-                    cout << "[" << i + 1 << "] " << categoryChoice[i] << "\n";
-                }
+            {
+                cout << "[" << i + 1 << "] " << categoryChoice[i] << "\n";
+            }
 
             cout << "\nEnter your choice (1-" << size << "): ";
 
@@ -183,28 +179,16 @@ void Patient_Record::updatePatient(Patient *patient)
 
                 cout << "\nYou selected: " << category << "\n";
                 patient->setCategory(category);
-                patient->setCategory(category);
                 break; // Exit the loop
             }
         }
         category = categoryChoice[choice];
-        patient->setCategory(category);
         patient->setCategory(category);
         break;
 
         // default:
         //     break;
     }
-}
-// sort all
-int *Patient_Record::sortAsc()
-{
-    return nullptr;
-}
-// sort selected id in array
-int *Patient_Record::sortAsc(int *userid)
-{
-    return nullptr;
 }
 // display all
 void Patient_Record::display()
@@ -225,7 +209,7 @@ void Patient_Record::display()
         cout << "Name: " << current->getName() << endl;
         cout << "Description: " << current->getDescription() << endl;
         cout << "Category: " << current->getCategory() << endl;
-        cout << "Timestamp: " << current->getTimestamp() << endl;
+        cout << "Timestamp: " << current->timestampToString() << endl;
         cout << "-------------------";
         cout << endl;
         current = current->getNext();
@@ -257,7 +241,7 @@ void Patient_Record::display(int *userId)
                 cout << "Name: " << current->getName() << endl;
                 cout << "Description: " << current->getDescription() << endl;
                 cout << "Category: " << current->getCategory() << endl;
-                cout << "Timestamp: " << current->getTimestamp() << endl;
+                cout << "Timestamp: " << current->timestampToString() << endl;
                 cout << "-------------------";
                 cout << endl;
             }
@@ -275,8 +259,8 @@ void Patient_Record::display(Patient *patient)
     cout << "Name: " << patient->getName() << endl;
     cout << "Description: " << patient->getDescription() << endl;
     cout << "Category: " << patient->getCategory() << endl;
-    cout << "Timestamp: " << patient->getTimestamp() << endl;
-    cout << "===================" << endl;
+    cout << "Timestamp: " << patient->timestampToString() << endl;
+    cout << "-------------------";
     cout << endl;
 }
 // get last element
@@ -289,3 +273,59 @@ Patient *Patient_Record::traverseLastNode()
     }
     return current;
 }
+// Mae Yang buat
+void Patient_Record::sortByName() 
+{
+    if (top == nullptr || top->getNext() == nullptr) {
+        // If the list is empty or has only one element, no need to sort
+        return;
+    }
+
+    bool swapped;
+    Patient *current, *nextNode, *lastSorted = nullptr;
+    do
+    {
+        swapped = false;
+        current = top;
+
+        while (current != nullptr && current->getNext() != nullptr && current->getNext() != lastSorted)
+        {
+            nextNode = current->getNext();
+            if (current->getName() > nextNode->getName())
+            {
+                int tempId = current->getId();
+                string tempName = current->getName();
+                string tempDescription = current->getDescription();
+                string tempCategory = current->getCategory();
+                tm tempTimestamp = current->getTimestamp();
+                
+                current->setId(nextNode->getId());
+                current->setName(nextNode->getName());
+                current->setDescription(nextNode->getDescription());
+                current->setCategory(nextNode->getCategory());
+                current->setTimestamp(nextNode->getTimestamp());
+
+                nextNode->setId(tempId);
+                nextNode->setName(tempName);
+                nextNode->setDescription(tempDescription);
+                nextNode->setCategory(tempCategory);
+                nextNode->setTimestamp(tempTimestamp);
+                
+                swapped = true;
+                
+                cout << "Swapped: " << current->getName() << " <-> " << nextNode->getName() << endl;
+            }
+            current = current->getNext();
+        }
+        lastSorted = current;
+    } while (swapped);
+    this->display();
+    cout << "This is the sorted list: " << endl;
+}
+
+// void swap(Patient *node1, Patient *node2)
+// {
+//     Patient *temp = node1;
+//     node1 = node2;
+//     node2 = temp;
+// }
