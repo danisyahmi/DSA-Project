@@ -104,12 +104,20 @@ int main()
             getline(cin, name);
             cout << "Enter patient description: ";
             getline(cin, description);
-            cout << "Enter patient category: \n";
+            cout << "Select patient category:\n";
             for (int i = 0; i < 5; i++)
             {
                 cout << "[" << i + 1 << "] " << categoryChoice[i] << "\n";
             }
+            cout << "Enter your choice (1-5): ";
             cin >> choice;
+
+            // Validate category choice
+            if (choice < 1 || choice > 5) {
+                cout << "Invalid category choice. Please try again.\n";
+                break;
+            }
+
             category = categoryChoice[choice - 1]; // Adjust for zero-based index
             patientRecord.pushPatient(name, description, category);
             cout << "Patient added successfully.\n";
@@ -163,6 +171,10 @@ int main()
             {
                 cout << "Popped Patient ID: " << poppedPatient->getId() << endl;
                 delete poppedPatient; // Free the memory
+            }
+            else
+            {
+                cout << "No patients to pop.\n";
             }
             break;
 
