@@ -25,8 +25,12 @@ std::string Patient::getCategory()
     return category;
 }
 
+std::tm Patient::getTimestamp(){
+    return this->timestamp;
+}
+
 // return timestamp in string
-std::string Patient::getTimestamp()
+std::string Patient::timestampToString()
 {
     char buffer[80];
     std::strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", &timestamp); // convert timestamp to char array in format set
@@ -64,4 +68,8 @@ void Patient::setNext(Patient *next)
 
 void Patient::setId(int id){
     this->id = id;
+}
+
+void Patient::setTimestamp(tm timestamp){
+    this->timestamp = timestamp;
 }

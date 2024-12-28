@@ -19,6 +19,8 @@ public:
     Patient* search(int);
     int* search(const std::string);
     void updatePatient(Patient*);
+    int* sortAsc();
+    int* sortAsc(int*);
     void display();
     void display(int*);
     void display(Patient*);
@@ -27,6 +29,7 @@ public:
     void getFromFile();
     bool underflow();
     bool overflow();
+    void sortByName();
 };
 
 #endif

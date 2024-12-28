@@ -23,9 +23,66 @@ int main()
     Patient *poppedPatient = nullptr;   // Declare poppedPatient here
     Patient *patientToPrint = nullptr;
 
+    //----------------------------------------------------------------------------------------------------------
+    // Adding 20 dummy patient records for testing
+    string dummyNames[20] = {
+    "Charlie",
+    "Diana",
+    "Ethan",
+    "George",
+    "Hanna",
+    "Fiona",
+    "Alice",
+    "Kevin",
+    "Isaac",
+    "Michael",
+    "Bob",
+    "Julia",
+    "Paula",
+    "Nina",
+    "Laura",
+    "Oliver",
+    "Rachel",
+    "Quentin",
+    "Samuel",
+    "Tina"
+    };
+    for (int i = 1; i < 5; ++i)
+    {
+        
+        string name = "Patient " + dummyNames[i];
+        string description = "Description for patient " + dummyNames[i];
+        string category;
+
+        // Assign categories in a round-robin fashion
+        switch (i % 5)
+        {
+        case 1:
+            category = "General";
+            break;
+        case 2:
+            category = "Chronic";
+            break;
+        case 3:
+            category = "Acute";
+            break;
+        case 4:
+            category = "Preventive";
+            break;
+        case 0:
+            category = "Palliative";
+            break;
+        }
+
+        patientRecord.pushPatient(name, description, category);
+        
+    }
+    cout << "20 dummy patients added successfully.\n";
+    //----------------------------------------------------------------------------------------------------------
+
     do
     {
-        cout << "\n=====================\n";
+       cout << "\n=====================\n";
         cout << " Patient Record System \n";
         cout << "=====================\n";
         cout << "1. Add Patient\n";
@@ -34,9 +91,14 @@ int main()
         cout << "4. Update Patient\n";
         cout << "5. Display All Patients\n";
         cout << "6. Pop Patient\n";
+<<<<<<< HEAD
         cout << "7. Print Patient to File\n"; // New option
         cout << "8. Get Patient from File\n"; // New option
         cout << "9. Exit\n";
+=======
+        cout << "7. Sort Patients by Name\n";
+        cout << "8. Exit\n";
+>>>>>>> 7f6886dadb061b783138fb9af25a73b85ded576a
         cout << "=====================\n";
         cout << "Enter your choice: ";
         cin >> choice;
@@ -124,6 +186,7 @@ int main()
             }
             break;
 
+<<<<<<< HEAD
         case 7: // Print Patient to File
             cout << "Enter patient ID to print to file: ";
             cin >> id;
@@ -144,6 +207,14 @@ int main()
             break;
 
         case 9: // Exit
+=======
+        case 7: // Sort Patients by Name
+            patientRecord.sortByName(); 
+            cout << "Patients sorted by name successfully.\n";
+            break;
+
+        case 8: // Exit
+>>>>>>> 7f6886dadb061b783138fb9af25a73b85ded576a
             cout << "Exiting the system. Thank you!\n";
             break;
 
@@ -151,7 +222,11 @@ int main()
             cout << "Invalid choice. Please try again.\n";
             break;
         }
+<<<<<<< HEAD
     } while (choice != 9);
+=======
+    } while (choice != 8);
+>>>>>>> 7f6886dadb061b783138fb9af25a73b85ded576a
 
     return 0;
 }
