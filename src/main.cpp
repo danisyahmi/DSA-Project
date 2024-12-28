@@ -21,6 +21,7 @@ int main()
     int *foundIds = nullptr;            // Declare foundIds here
     Patient *patientToUpdate = nullptr; // Declare patientToUpdate here
     Patient *poppedPatient = nullptr;   // Declare poppedPatient here
+    Patient *patientToPrint = nullptr;
 
     //----------------------------------------------------------------------------------------------------------
     // Adding 20 dummy patient records for testing
@@ -90,8 +91,14 @@ int main()
         cout << "4. Update Patient\n";
         cout << "5. Display All Patients\n";
         cout << "6. Pop Patient\n";
+<<<<<<< HEAD
+        cout << "7. Print Patient to File\n"; // New option
+        cout << "8. Get Patient from File\n"; // New option
+        cout << "9. Exit\n";
+=======
         cout << "7. Sort Patients by Name\n";
         cout << "8. Exit\n";
+>>>>>>> 7f6886dadb061b783138fb9af25a73b85ded576a
         cout << "=====================\n";
         cout << "Enter your choice: ";
         cin >> choice;
@@ -113,7 +120,8 @@ int main()
             cin >> choice;
 
             // Validate category choice
-            if (choice < 1 || choice > 5) {
+            if (choice < 1 || choice > 5)
+            {
                 cout << "Invalid category choice. Please try again.\n";
                 break;
             }
@@ -170,7 +178,7 @@ int main()
             if (poppedPatient)
             {
                 cout << "Popped Patient ID: " << poppedPatient->getId() << endl;
-                delete poppedPatient; // Free the memory
+                delete poppedPatient;
             }
             else
             {
@@ -178,12 +186,35 @@ int main()
             }
             break;
 
+<<<<<<< HEAD
+        case 7: // Print Patient to File
+            cout << "Enter patient ID to print to file: ";
+            cin >> id;
+            patientToPrint = patientRecord.search(id);
+            if (patientToPrint)
+            {
+                patientRecord.printToFile(patientToPrint, 2);
+                cout << "Patient record printed to file successfully.\n";
+            }
+            else
+            {
+                cout << "Patient not found.\n";
+            }
+            break;
+
+        case 8: // Get Patient from File
+            patientRecord.getFromFile();
+            break;
+
+        case 9: // Exit
+=======
         case 7: // Sort Patients by Name
             patientRecord.sortByName(); 
             cout << "Patients sorted by name successfully.\n";
             break;
 
         case 8: // Exit
+>>>>>>> 7f6886dadb061b783138fb9af25a73b85ded576a
             cout << "Exiting the system. Thank you!\n";
             break;
 
@@ -191,7 +222,11 @@ int main()
             cout << "Invalid choice. Please try again.\n";
             break;
         }
+<<<<<<< HEAD
+    } while (choice != 9);
+=======
     } while (choice != 8);
+>>>>>>> 7f6886dadb061b783138fb9af25a73b85ded576a
 
     return 0;
 }

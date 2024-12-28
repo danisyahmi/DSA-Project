@@ -25,6 +25,8 @@ public:
     void display(int*);
     void display(Patient*);
     Patient *traverseLastNode();
+    void printToFile(Patient*, int);
+    void getFromFile();
     bool underflow();
     bool overflow();
     void sortByName();

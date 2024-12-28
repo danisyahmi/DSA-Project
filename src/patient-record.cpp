@@ -1,5 +1,6 @@
 #include <iostream>
 #include <limits>
+#include <iomanip>
 #include "patient-record.h"
 
 using namespace std;
@@ -34,19 +35,13 @@ void Patient_Record::pushPatient(string name, string description, string categor
 {
     ++userId;
     Patient *newPatient = new Patient();
-
     newPatient->setId(userId);
     newPatient->setName(name);
     newPatient->setDescription(description);
     newPatient->setCategory(category);
-
-    // if(overflow()){
-    // delete newPatient;
-    //     return;
-    // }
-
     newPatient->setNext(top);
     top = newPatient;
+    this->printToFile(newPatient, 1);
     totalPatient++;
 }
 // pop top element
@@ -57,11 +52,10 @@ Patient *Patient_Record::popPatient()
         cout << "No patients to pop." << endl;
         return nullptr;
     }
-    Patient *temp, *poppedNode;
-    temp = poppedNode = top;
+    Patient *poppedNode;
+    poppedNode = top;
     top = top->getNext();
     totalPatient--;
-    delete temp;
     return poppedNode;
 }
 // search by id
@@ -184,12 +178,24 @@ void Patient_Record::updatePatient(Patient *patient)
         }
         category = categoryChoice[choice];
         patient->setCategory(category);
+        this->printToFile(patient, 1);
         break;
 
         // default:
         //     break;
     }
 }
+<<<<<<< HEAD
+// sort all
+// int *Patient_Record::sortAsc(){
+
+// }
+// // sort selected id in array
+// int *Patient_Record::sortAsc(int *userid){
+//     // choose 1 sorting method
+// }
+=======
+>>>>>>> 7f6886dadb061b783138fb9af25a73b85ded576a
 // display all
 void Patient_Record::display()
 {
@@ -267,12 +273,81 @@ void Patient_Record::display(Patient *patient)
 Patient *Patient_Record::traverseLastNode()
 {
     current = top;
-    for (int i = 0; i < totalPatient; i++)
+    for (int i = 0; i <= totalPatient; i++)
     {
         current = current->getNext();
     }
     return current;
 }
+<<<<<<< HEAD
+
+void Patient_Record::printToFile(Patient *patient, int filechoice)
+{
+    ofstream fout;
+    const int idWidth = 10;
+    const int nameWidth = 20;
+    const int descWidth = 30;
+    const int categoryWidth = 15;
+    const int timestampWidth = 25;
+    string filename;
+    filechoice == 1 ? filename = "ALLPATIENT.txt" : filename = "PATIENT.txt";
+
+    fout.open(filename);
+    fout << left << setw(idWidth) << "ID"
+         << setw(nameWidth) << "Name"
+         << setw(descWidth) << "Description"
+         << setw(categoryWidth) << "Category"
+         << setw(timestampWidth) << "Timestamp" << endl;
+
+    if (filechoice == 2)
+    {
+        // Output the patient data
+        fout << left << setw(idWidth) << patient->getId()
+             << setw(nameWidth) << patient->getName()
+             << setw(descWidth) << patient->getDescription()
+             << setw(categoryWidth) << patient->getCategory()
+             << setw(timestampWidth) << patient->getTimestamp() << endl;
+    }
+    else
+    {
+        patient = top;
+        for (int i = 0; i <= totalPatient; i++)
+        {
+            cout << i << endl;
+            fout << left << setw(idWidth) << patient->getId()
+                 << setw(nameWidth) << patient->getName()
+                 << setw(descWidth) << patient->getDescription()
+                 << setw(categoryWidth) << patient->getCategory()
+                 << setw(timestampWidth) << patient->getTimestamp() << endl;
+            patient = patient->getNext();
+        }
+    }
+
+    fout.close();
+}
+void Patient_Record::getFromFile()
+{
+    ifstream fin;
+    string name, description, category, timestamp;
+    string line;
+
+    fin.open("PATIENTDATA.txt");
+
+    // Loop to read each line from the file
+    while (getline(fin, line))
+    {                            // getline will return a whole line until '\n'. it will take the whole line
+        istringstream iss(line); // construct an string stream to parse the whole line of string
+        // get data until ',' is found, data is seperated by ','
+        getline(iss, name, ',');
+        getline(iss, description, ',');
+        getline(iss, category, ',');
+        this->pushPatient(name, description, category);
+    }
+
+    fin.close();
+    cout << "\nNew Patient Created\n";
+}
+=======
 // Mae Yang buat
 void Patient_Record::sortByName() 
 {
@@ -329,3 +404,4 @@ void Patient_Record::sortByName()
 //     node1 = node2;
 //     node2 = temp;
 // }
+>>>>>>> 7f6886dadb061b783138fb9af25a73b85ded576a
