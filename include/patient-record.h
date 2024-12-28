@@ -23,7 +23,7 @@ public:
     void display(int*);
     void display(Patient*);
     Patient *traverseLastNode();
-    void printToFile(Patient*);
+    void printToFile(Patient*, int);
     void getFromFile();
     bool underflow();
     bool overflow();

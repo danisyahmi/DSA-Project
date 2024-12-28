@@ -130,7 +130,7 @@ int main()
             patientToPrint = patientRecord.search(id);
             if (patientToPrint)
             {
-                patientRecord.printToFile(patientToPrint);
+                patientRecord.printToFile(patientToPrint, 2);
                 cout << "Patient record printed to file successfully.\n";
             }
             else

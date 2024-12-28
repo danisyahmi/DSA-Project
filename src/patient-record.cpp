@@ -1,5 +1,6 @@
 #include <iostream>
 #include <limits>
+#include <iomanip>
 #include "patient-record.h"
 
 using namespace std;
@@ -34,19 +35,13 @@ void Patient_Record::pushPatient(string name, string description, string categor
 {
     ++userId;
     Patient *newPatient = new Patient();
-
     newPatient->setId(userId);
     newPatient->setName(name);
     newPatient->setDescription(description);
     newPatient->setCategory(category);
-
-    // if(overflow()){
-    // delete newPatient;
-    //     return;
-    // }
-
     newPatient->setNext(top);
     top = newPatient;
+    this->printToFile(newPatient, 1);
     totalPatient++;
 }
 // pop top element
@@ -112,7 +107,8 @@ int *Patient_Record::search(const string searchedItem)
 }
 // update by id
 void Patient_Record::updatePatient(Patient *patient)
-{    string name, category, description;
+{
+    string name, category, description;
     string categoryChoice[] = {
         "General",    // For common or unspecified conditions
         "Chronic",    // For long-term medical conditions
@@ -164,7 +160,7 @@ void Patient_Record::updatePatient(Patient *patient)
             cin.clear();
             cin.ignore();
             cin >> choice;
-            choice = choice -1;
+            choice = choice - 1;
             if (cin.fail() || choice < 1 || choice > size)
             {
                 cin.clear();
@@ -182,6 +178,7 @@ void Patient_Record::updatePatient(Patient *patient)
         }
         category = categoryChoice[choice];
         patient->setCategory(category);
+        this->printToFile(patient, 1);
         break;
 
         // default:
@@ -190,7 +187,7 @@ void Patient_Record::updatePatient(Patient *patient)
 }
 // sort all
 // int *Patient_Record::sortAsc(){
-    
+
 // }
 // // sort selected id in array
 // int *Patient_Record::sortAsc(int *userid){
@@ -256,7 +253,7 @@ void Patient_Record::display(int *userId)
     }
 }
 // display by id
-void Patient_Record::display(Patient* patient)
+void Patient_Record::display(Patient *patient)
 {
     cout << endl
          << "Search Found:" << endl;
@@ -270,47 +267,79 @@ void Patient_Record::display(Patient* patient)
     cout << endl;
 }
 // get last element
-Patient* Patient_Record::traverseLastNode()
+Patient *Patient_Record::traverseLastNode()
 {
     current = top;
-    for (int i = 0; i < totalPatient; i++)
+    for (int i = 0; i <= totalPatient; i++)
     {
         current = current->getNext();
     }
     return current;
 }
- 
-void Patient_Record::printToFile(Patient* patient){
-    ofstream fout;
-    // string fileName;
-    // cout << "\nPlease enter file name you want to print in : ";
-    // getline(cin, fileName);
-    fout.open("output.txt");
 
-    fout << patient->getId() << endl;
-    fout << patient->getName() << endl;
-    fout << patient->getDescription() << endl;
-    fout << patient->getCategory() << endl;
-    fout << patient->getTimestamp() << endl;
+void Patient_Record::printToFile(Patient *patient, int filechoice)
+{
+    ofstream fout;
+    const int idWidth = 10;
+    const int nameWidth = 20;
+    const int descWidth = 30;
+    const int categoryWidth = 15;
+    const int timestampWidth = 25;
+    string filename;
+    filechoice == 1 ? filename = "ALLPATIENT.txt" : filename = "PATIENT.txt";
+
+    fout.open(filename);
+    fout << left << setw(idWidth) << "ID"
+         << setw(nameWidth) << "Name"
+         << setw(descWidth) << "Description"
+         << setw(categoryWidth) << "Category"
+         << setw(timestampWidth) << "Timestamp" << endl;
+
+    if (filechoice == 2)
+    {
+        // Output the patient data
+        fout << left << setw(idWidth) << patient->getId()
+             << setw(nameWidth) << patient->getName()
+             << setw(descWidth) << patient->getDescription()
+             << setw(categoryWidth) << patient->getCategory()
+             << setw(timestampWidth) << patient->getTimestamp() << endl;
+    }
+    else
+    {
+        patient = top;
+        for (int i = 0; i <= totalPatient; i++)
+        {
+            cout << i << endl;
+            fout << left << setw(idWidth) << patient->getId()
+                 << setw(nameWidth) << patient->getName()
+                 << setw(descWidth) << patient->getDescription()
+                 << setw(categoryWidth) << patient->getCategory()
+                 << setw(timestampWidth) << patient->getTimestamp() << endl;
+            patient = patient->getNext();
+        }
+    }
 
     fout.close();
 }
-void Patient_Record::getFromFile(){
+void Patient_Record::getFromFile()
+{
     ifstream fin;
-    string fileName, name, description, category, timestamp;
-    int id;
+    string name, description, category, timestamp;
+    string line;
 
-    // cout << "\nPlease enter file name you want to print in : ";
-    // getline(cin, fileName);
-    fin.open("input.txt");
-    
-    while (fin >> id >> name >> description >> category)
-    { 
-        // fin >> id >> name >> description >> category >> timestamp;  
-        continue;
+    fin.open("PATIENTDATA.txt");
+
+    // Loop to read each line from the file
+    while (getline(fin, line))
+    {                            // getline will return a whole line until '\n'. it will take the whole line
+        istringstream iss(line); // construct an string stream to parse the whole line of string
+        // get data until ',' is found, data is seperated by ','
+        getline(iss, name, ',');
+        getline(iss, description, ',');
+        getline(iss, category, ',');
+        this->pushPatient(name, description, category);
     }
-    
+
     fin.close();
-    this->pushPatient(name , description , category);
     cout << "\nNew Patient Created\n";
 }
