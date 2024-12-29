@@ -34,7 +34,8 @@ std::string Patient::timestampToString()
 {
     char buffer[80];
     std::strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", &timestamp); // convert timestamp to char array in format set
-    return std::string(buffer);
+    this->timestampString = std::string(buffer);
+    return this->timestampString;
 }
 
 Patient *Patient::getNext()
@@ -42,7 +43,7 @@ Patient *Patient::getNext()
     return next;
 }
 
-int Patient::getId(){
+std::string Patient::getId(){
     return id;
 }
 
@@ -66,10 +67,14 @@ void Patient::setNext(Patient *next)
     this->next = next;
 }
 
-void Patient::setId(int id){
+void Patient::setId(std::string id){
     this->id = id;
 }
 
 void Patient::setTimestamp(tm timestamp){
     this->timestamp = timestamp;
+}
+
+void Patient::setTimestampString(std::string timestampString){
+    this->timestampString = timestampString;
 }

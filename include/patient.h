@@ -6,10 +6,11 @@
 
 class Patient{
     private:
-    int id; 
+    std::string id; 
     std::string name;
     std::string description;
     std::string category;
+    std::string timestampString;
     std::tm timestamp;
     std::tm apppoinment;
     
@@ -23,9 +24,10 @@ class Patient{
     void setDescription(std::string);
     void setCategory(std::string);
     void setNext(Patient*);
-    void setId(int);
+    void setId(std::string);
     void setTimestamp(std::tm);
-    int getId();
+    void setTimestampString(std::string);
+    std::string getId();
     std::string getName();
     std::string getDescription();
     std::string getCategory();

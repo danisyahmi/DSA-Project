@@ -17,10 +17,10 @@ int main()
         "Preventive", // For routine check-ups or preventive care
         "Palliative"  // For comfort-focused care in terminal conditions
     };
-    int id;
-    int *foundIds = nullptr;            // Declare foundIds here
+    string id, patientToDeleteID;
+    string *foundIds = nullptr;            // Declare foundIds here
     Patient *patientToUpdate = nullptr; // Declare patientToUpdate here
-    Patient *poppedPatient = nullptr;   // Declare poppedPatient here
+    Patient *patientToDelete = nullptr;   // Declare patientToDelete here
     Patient *patientToPrint = nullptr;
 
     //----------------------------------------------------------------------------------------------------------
@@ -47,10 +47,11 @@ int main()
     "Samuel",
     "Tina"
     };
-    for (int i = 1; i < 5; ++i)
+
+    for (int i = 1; i < 20; ++i)
     {
         
-        string name = "Patient " + dummyNames[i];
+        string name = dummyNames[i];
         string description = "Description for patient " + dummyNames[i];
         string category;
 
@@ -74,10 +75,8 @@ int main()
             break;
         }
 
-        patientRecord.pushPatient(name, description, category);
-        
+        patientRecord.addPatient(name, description, category);
     }
-    cout << "20 dummy patients added successfully.\n";
     //----------------------------------------------------------------------------------------------------------
 
     do
@@ -90,19 +89,16 @@ int main()
         cout << "3. Search Patient by Name/Category\n";
         cout << "4. Update Patient\n";
         cout << "5. Display All Patients\n";
-        cout << "6. Pop Patient\n";
-<<<<<<< HEAD
+        cout << "6. Delete Patient\n";
         cout << "7. Print Patient to File\n"; // New option
         cout << "8. Get Patient from File\n"; // New option
-        cout << "9. Exit\n";
-=======
-        cout << "7. Sort Patients by Name\n";
-        cout << "8. Exit\n";
->>>>>>> 7f6886dadb061b783138fb9af25a73b85ded576a
+        cout << "9. Sort Patients by Name\n";
+        cout << "10. Exit\n";
         cout << "=====================\n";
         cout << "Enter your choice: ";
         cin >> choice;
-
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(),'\n');
         switch (choice)
         {
         case 1: // Add Patient
@@ -127,23 +123,8 @@ int main()
             }
 
             category = categoryChoice[choice - 1]; // Adjust for zero-based index
-            patientRecord.pushPatient(name, description, category);
+            patientRecord.addPatient(name, description, category);
             cout << "Patient added successfully.\n";
-            break;
-
-        case 2: // Search Patient by ID
-            cout << "Enter patient ID to search: ";
-            cin >> id;
-            Patient *foundPatientById;
-            foundPatientById = patientRecord.search(id);
-            if (foundPatientById)
-            {
-                patientRecord.display(foundPatientById);
-            }
-            else
-            {
-                cout << "Patient not found.\n";
-            }
             break;
 
         case 3: // Search Patient by Name/Category
@@ -157,7 +138,7 @@ int main()
         case 4: // Update Patient
             cout << "Enter patient ID to update: ";
             cin >> id;
-            patientToUpdate = patientRecord.search(id);
+            patientToUpdate = patientRecord.searchID(id);
             if (patientToUpdate)
             {
                 patientRecord.updatePatient(patientToUpdate);
@@ -173,12 +154,14 @@ int main()
             patientRecord.display();
             break;
 
-        case 6: // Pop Patient
-            poppedPatient = patientRecord.popPatient();
-            if (poppedPatient)
+        case 6: // delete Patient
+            cout << "Enter patient ID to delete: ";
+            getline(cin,patientToDeleteID);
+            patientToDelete = patientRecord.deletePatient(patientToDeleteID);
+            if (patientToDelete)
             {
-                cout << "Popped Patient ID: " << poppedPatient->getId() << endl;
-                delete poppedPatient;
+                cout << "Popped Patient ID: " << patientToDelete->getId() << endl;
+                delete patientToDelete;
             }
             else
             {
@@ -186,11 +169,10 @@ int main()
             }
             break;
 
-<<<<<<< HEAD
         case 7: // Print Patient to File
             cout << "Enter patient ID to print to file: ";
-            cin >> id;
-            patientToPrint = patientRecord.search(id);
+            getline(cin,id);
+            patientToPrint = patientRecord.searchID(id);
             if (patientToPrint)
             {
                 patientRecord.printToFile(patientToPrint, 2);
@@ -207,14 +189,10 @@ int main()
             break;
 
         case 9: // Exit
-=======
-        case 7: // Sort Patients by Name
-            patientRecord.sortByName(); 
+        patientRecord.sortByName(); 
             cout << "Patients sorted by name successfully.\n";
             break;
-
-        case 8: // Exit
->>>>>>> 7f6886dadb061b783138fb9af25a73b85ded576a
+        case 10:
             cout << "Exiting the system. Thank you!\n";
             break;
 
@@ -222,11 +200,8 @@ int main()
             cout << "Invalid choice. Please try again.\n";
             break;
         }
-<<<<<<< HEAD
-    } while (choice != 9);
-=======
-    } while (choice != 8);
->>>>>>> 7f6886dadb061b783138fb9af25a73b85ded576a
+    } while (choice != 10);
+
 
     return 0;
 }

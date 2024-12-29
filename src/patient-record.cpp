@@ -1,10 +1,12 @@
 #include <iostream>
 #include <limits>
+#include <fstream>
+#include <sstream>
 #include <iomanip>
 #include "patient-record.h"
 
 using namespace std;
-int idArr[100] = {}; // selected id, get by find id
+std::string idArr[100] = {}; // selected id, get by find id
 
 // constructor
 Patient_Record::Patient_Record()
@@ -15,7 +17,6 @@ Patient_Record::Patient_Record()
 // if stack is empty
 bool Patient_Record::underflow()
 {
-
     if (totalPatient == 0)
     {
         cout << endl
@@ -31,11 +32,12 @@ bool Patient_Record::overflow()
     return false;
 }
 // push element into stack
-void Patient_Record::pushPatient(string name, string description, string category) // plainning to change this to normal linked list
+void Patient_Record::addPatient(string name, string description, string category) // plainning to change this to normal linked list
 {
     ++userId;
+    string newUserID = "P" + to_string(userId);
     Patient *newPatient = new Patient();
-    newPatient->setId(userId);
+    newPatient->setId(newUserID);
     newPatient->setName(name);
     newPatient->setDescription(description);
     newPatient->setCategory(category);
@@ -44,22 +46,53 @@ void Patient_Record::pushPatient(string name, string description, string categor
     this->printToFile(newPatient, 1);
     totalPatient++;
 }
-// pop top element
-Patient *Patient_Record::popPatient()
+// delete element
+// tak 
+Patient *Patient_Record::deletePatient(string deleteID)
 {
     if (this->underflow())
     {
-        cout << "No patients to pop." << endl;
+        cout << "No patients to delete." << endl;
         return nullptr;
     }
-    Patient *poppedNode;
-    poppedNode = top;
-    top = top->getNext();
+
+    Patient *current = top;
+    Patient *previous = nullptr;
+
+    // Search for the patient with the given ID
+    while (current != nullptr && current->getId() != deleteID)
+    {
+        previous = current;
+        current = current->getNext();
+    }
+
+    // If the patient was not found
+    if (current == nullptr)
+    {
+        cout << "Patient with ID " << deleteID << " not found." << endl;
+        return nullptr;
+    }
+
+    // If the patient to delete is the top node
+    if (current == top)
+    {
+        top = top->getNext();
+    }
+    else
+    {
+        // Bypass the current node
+        previous->setNext(current->getNext());
+    }
+
+    // Delete the current node
+    delete current;
     totalPatient--;
-    return poppedNode;
+
+    cout << "Patient with ID " << deleteID << " has been deleted." << endl;
+    return nullptr; // Return nullptr as the patient has been deleted
 }
 // search by id
-Patient *Patient_Record::search(int id)
+Patient *Patient_Record::searchID(string id)
 {
     current = top;
     for (int i = 0; i < totalPatient; i++)
@@ -74,7 +107,7 @@ Patient *Patient_Record::search(int id)
     return current;
 }
 // search by name
-int *Patient_Record::search(const string searchedItem)
+string* Patient_Record::search(const string searchedItem)
 {
     current = top;
     if (this->underflow())
@@ -180,22 +213,9 @@ void Patient_Record::updatePatient(Patient *patient)
         patient->setCategory(category);
         this->printToFile(patient, 1);
         break;
-
-        // default:
-        //     break;
     }
 }
-<<<<<<< HEAD
-// sort all
-// int *Patient_Record::sortAsc(){
 
-// }
-// // sort selected id in array
-// int *Patient_Record::sortAsc(int *userid){
-//     // choose 1 sorting method
-// }
-=======
->>>>>>> 7f6886dadb061b783138fb9af25a73b85ded576a
 // display all
 void Patient_Record::display()
 {
@@ -222,7 +242,7 @@ void Patient_Record::display()
     }
 }
 // display by selected id
-void Patient_Record::display(int *userId)
+void Patient_Record::display(string *userId)
 {
     if (this->underflow())
     {
@@ -279,46 +299,34 @@ Patient *Patient_Record::traverseLastNode()
     }
     return current;
 }
-<<<<<<< HEAD
 
 void Patient_Record::printToFile(Patient *patient, int filechoice)
 {
     ofstream fout;
-    const int idWidth = 10;
-    const int nameWidth = 20;
-    const int descWidth = 30;
-    const int categoryWidth = 15;
-    const int timestampWidth = 25;
     string filename;
     filechoice == 1 ? filename = "ALLPATIENT.txt" : filename = "PATIENT.txt";
 
     fout.open(filename);
-    fout << left << setw(idWidth) << "ID"
-         << setw(nameWidth) << "Name"
-         << setw(descWidth) << "Description"
-         << setw(categoryWidth) << "Category"
-         << setw(timestampWidth) << "Timestamp" << endl;
 
     if (filechoice == 2)
     {
         // Output the patient data
-        fout << left << setw(idWidth) << patient->getId()
-             << setw(nameWidth) << patient->getName()
-             << setw(descWidth) << patient->getDescription()
-             << setw(categoryWidth) << patient->getCategory()
-             << setw(timestampWidth) << patient->getTimestamp() << endl;
+        fout << patient->getId()
+             << '\t' << patient->getName()
+             << '\t' << patient->getDescription()
+             << '\t' << patient->getCategory()
+             << '\t' << patient->timestampToString() << endl;
     }
     else
     {
         patient = top;
         for (int i = 0; i <= totalPatient; i++)
         {
-            cout << i << endl;
-            fout << left << setw(idWidth) << patient->getId()
-                 << setw(nameWidth) << patient->getName()
-                 << setw(descWidth) << patient->getDescription()
-                 << setw(categoryWidth) << patient->getCategory()
-                 << setw(timestampWidth) << patient->getTimestamp() << endl;
+            fout << patient->getId()
+                 << '\t' << patient->getName()
+                 << '\t' << patient->getDescription()
+                 << '\t' << patient->getCategory()
+                 << '\t' << patient->timestampToString() << endl;
             patient = patient->getNext();
         }
     }
@@ -328,30 +336,39 @@ void Patient_Record::printToFile(Patient *patient, int filechoice)
 void Patient_Record::getFromFile()
 {
     ifstream fin;
-    string name, description, category, timestamp;
-    string line;
+    Patient *temp = new Patient;
+    string line, id, name, description, category, timestamp;
 
-    fin.open("PATIENTDATA.txt");
+    fin.open("ALLPATIENT.txt");
 
     // Loop to read each line from the file
     while (getline(fin, line))
     {                            // getline will return a whole line until '\n'. it will take the whole line
         istringstream iss(line); // construct an string stream to parse the whole line of string
         // get data until ',' is found, data is seperated by ','
-        getline(iss, name, ',');
-        getline(iss, description, ',');
-        getline(iss, category, ',');
-        this->pushPatient(name, description, category);
+        getline(iss,id,'\t'); 
+        getline(iss, name, '\t');
+        getline(iss, description, '\t');
+        getline(iss, category, '\t');
+        getline(iss, timestamp, '\t');
+        temp->setId(id);
+        temp->setName(name);
+        temp->setDescription(description);
+        temp->setCategory(category);
+        temp->setTimestampString(timestamp);
+        this->display(temp);
+        // this->addPatient(name, description, category);
     }
 
     fin.close();
     cout << "\nNew Patient Created\n";
 }
-=======
+
 // Mae Yang buat
-void Patient_Record::sortByName() 
+void Patient_Record::sortByName()
 {
-    if (top == nullptr || top->getNext() == nullptr) {
+    if (top == nullptr || top->getNext() == nullptr)
+    {
         // If the list is empty or has only one element, no need to sort
         return;
     }
@@ -368,12 +385,12 @@ void Patient_Record::sortByName()
             nextNode = current->getNext();
             if (current->getName() > nextNode->getName())
             {
-                int tempId = current->getId();
+                string tempId = current->getId();
                 string tempName = current->getName();
                 string tempDescription = current->getDescription();
                 string tempCategory = current->getCategory();
                 tm tempTimestamp = current->getTimestamp();
-                
+
                 current->setId(nextNode->getId());
                 current->setName(nextNode->getName());
                 current->setDescription(nextNode->getDescription());
@@ -385,23 +402,12 @@ void Patient_Record::sortByName()
                 nextNode->setDescription(tempDescription);
                 nextNode->setCategory(tempCategory);
                 nextNode->setTimestamp(tempTimestamp);
-                
+
                 swapped = true;
-                
-                cout << "Swapped: " << current->getName() << " <-> " << nextNode->getName() << endl;
             }
             current = current->getNext();
         }
         lastSorted = current;
     } while (swapped);
-    this->display();
-    cout << "This is the sorted list: " << endl;
+    cout << "\nList has been sorted\n";
 }
-
-// void swap(Patient *node1, Patient *node2)
-// {
-//     Patient *temp = node1;
-//     node1 = node2;
-//     node2 = temp;
-// }
->>>>>>> 7f6886dadb061b783138fb9af25a73b85ded576a
