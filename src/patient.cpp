@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include <string>
 #include <ctime>
@@ -25,7 +26,7 @@ std::string Patient::getCategory()
     return category;
 }
 
-std::tm Patient::getTimestamp(){
+std::tm Patient::getTimestamp() {
     return this->timestamp;
 }
 
@@ -38,12 +39,12 @@ std::string Patient::timestampToString()
     return this->timestampString;
 }
 
-Patient *Patient::getNext()
+Patient* Patient::getNext()
 {
     return next;
 }
 
-std::string Patient::getId(){
+std::string Patient::getId() {
     return id;
 }
 
@@ -60,21 +61,21 @@ void Patient::setDescription(std::string description)
 void Patient::setCategory(std::string category)
 {
     this->category = category;
-}           
+}
 
-void Patient::setNext(Patient *next)
+void Patient::setNext(Patient* next)
 {
     this->next = next;
 }
 
-void Patient::setId(std::string id){
+void Patient::setId(std::string id) {
     this->id = id;
 }
 
-void Patient::setTimestamp(tm timestamp){
+void Patient::setTimestamp(tm timestamp) {
     this->timestamp = timestamp;
 }
 
-void Patient::setTimestampString(std::string timestampString){
+void Patient::setTimestampString(std::string timestampString) {
     this->timestampString = timestampString;
 }
