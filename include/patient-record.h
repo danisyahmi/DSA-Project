@@ -22,7 +22,7 @@ public:
     void display();
     void display(std::string*);
     void display(Patient*);
-    void newPatient(Patient*, std::string newUserID, std::string, std::string, std::string);
+    void newPatient(Patient* );
     Patient *traverseLastNode();
     void printToFile(Patient*, int);
     void getFromFile();

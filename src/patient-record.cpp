@@ -39,10 +39,17 @@ void Patient_Record::addPatient(string name, string description, string category
     cout << userId << endl;
     string newUserID = "P" + to_string(userId);
     Patient *newPatient = new Patient();
-    this->newPatient(newPatient, newUserID, name, description,category);
-    // this->printToFile(newPatient, 1);
+    newPatient->setId(newUserID);
+    newPatient->setName(name);
+    newPatient->setDescription(description);
+    newPatient->setCategory(category);
+    newPatient->setNext(top);
+    top = newPatient;
+    this->printToFile(newPatient, 1);
     totalPatient++;
 }
+
+
 // delete element
 // tak
 Patient *Patient_Record::deletePatient(string deleteID)
@@ -297,14 +304,11 @@ Patient *Patient_Record::traverseLastNode()
     return current;
 }
 
-void Patient_Record::newPatient(Patient *newPatient, string newUserID, string name, string description, string category)
+void Patient_Record::newPatient(Patient *newPatient)
 {
-    newPatient->setId(newUserID);
-    newPatient->setName(name);
-    newPatient->setDescription(description);
-    newPatient->setCategory(category);
     if(top != nullptr){
     newPatient->setNext(top);
+    top = newPatient;
     }else{
     top = newPatient;
     }
@@ -347,14 +351,13 @@ void Patient_Record::printToFile(Patient *patient, int filechoice)
 void Patient_Record::getFromFile()
 {
     ifstream fin;
-    Patient *temp = new Patient();
     string line, id, name, description, category, timestamp;
-
     fin.open("ALLPATIENT.txt");
 
     // Loop to read each line from the file
     while (getline(fin, line))
     {                            // getline will return a whole line until '\n'. it will take the whole line
+    Patient *temp = new Patient();
         istringstream iss(line); // construct an string stream to parse the whole line of string
         // get data until ',' is found, data is seperated by ','
         getline(iss, id, '\t');
@@ -368,12 +371,14 @@ void Patient_Record::getFromFile()
         }
         else
         {
+            ++userId;
             temp->setId(id);
             temp->setName(name);
             temp->setDescription(description);
             temp->setCategory(category);
             temp->setTimestampString(timestamp);
-            this->newPatient(temp, id, name, description, category);
+            temp->setNext(top);
+            top = temp;
             totalPatient++;
         }
     }
