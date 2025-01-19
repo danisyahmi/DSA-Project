@@ -1,25 +1,27 @@
+#pragma once
+
 #ifndef PATIENT_H
 #define PATIENT_H
 
 #include <string>
 #include <ctime>
 
-class Patient{
-    private:
-    std::string id; 
+class Patient {
+private:
+    std::string id;
     std::string name;
     std::string description;
     std::string category;
     std::string timestampString;
     std::tm timestamp;
     std::tm apppoinment;
-    
-    protected:
+
+protected:
     Patient* next;
-    
-    public:
+
+public:
     Patient();
-    ~Patient(){}
+    ~Patient() {}
     void setName(std::string);
     void setDescription(std::string);
     void setCategory(std::string);

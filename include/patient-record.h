@@ -1,3 +1,5 @@
+#pragma once
+
 #ifndef PATIENT_RECORD_H
 #define PATIENT_RECORD_H
 #include <string>
@@ -6,12 +8,12 @@
 class Patient_Record
 {
 private:
-    Patient *top;
+    Patient* top;
     int userId;
     int totalPatient;
 
 public:
-    Patient *current;
+    Patient* current;
     Patient_Record();
     ~Patient_Record() {};
     void addPatient(std::string, std::string, std::string);
@@ -22,8 +24,7 @@ public:
     void display();
     void display(std::string*);
     void display(Patient*);
-    void newPatient(Patient* );
-    Patient *traverseLastNode();
+    Patient* traverseLastNode();
     void printToFile(Patient*, int);
     void getFromFile();
     bool underflow();
