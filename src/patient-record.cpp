@@ -11,6 +11,7 @@ std::string idArr[100] = {}; // selected id, get by find id
 // constructor
 Patient_Record::Patient_Record()
 {
+    top = nullptr;
     totalPatient = 0;
     userId = 0;
 }
@@ -35,19 +36,15 @@ bool Patient_Record::overflow()
 void Patient_Record::addPatient(string name, string description, string category) // plainning to change this to normal linked list
 {
     ++userId;
+    cout << userId << endl;
     string newUserID = "P" + to_string(userId);
     Patient *newPatient = new Patient();
-    newPatient->setId(newUserID);
-    newPatient->setName(name);
-    newPatient->setDescription(description);
-    newPatient->setCategory(category);
-    newPatient->setNext(top);
-    top = newPatient;
-    this->printToFile(newPatient, 1);
+    this->newPatient(newPatient, newUserID, name, description,category);
+    // this->printToFile(newPatient, 1);
     totalPatient++;
 }
 // delete element
-// tak 
+// tak
 Patient *Patient_Record::deletePatient(string deleteID)
 {
     if (this->underflow())
@@ -107,7 +104,7 @@ Patient *Patient_Record::searchID(string id)
     return current;
 }
 // search by name
-string* Patient_Record::search(const string searchedItem)
+string *Patient_Record::search(const string searchedItem)
 {
     current = top;
     if (this->underflow())
@@ -300,6 +297,20 @@ Patient *Patient_Record::traverseLastNode()
     return current;
 }
 
+void Patient_Record::newPatient(Patient *newPatient, string newUserID, string name, string description, string category)
+{
+    newPatient->setId(newUserID);
+    newPatient->setName(name);
+    newPatient->setDescription(description);
+    newPatient->setCategory(category);
+    if(top != nullptr){
+    newPatient->setNext(top);
+    }else{
+    top = newPatient;
+    }
+    cout << newPatient->getId() << endl;
+}
+
 void Patient_Record::printToFile(Patient *patient, int filechoice)
 {
     ofstream fout;
@@ -336,7 +347,7 @@ void Patient_Record::printToFile(Patient *patient, int filechoice)
 void Patient_Record::getFromFile()
 {
     ifstream fin;
-    Patient *temp = new Patient;
+    Patient *temp = new Patient();
     string line, id, name, description, category, timestamp;
 
     fin.open("ALLPATIENT.txt");
@@ -346,22 +357,28 @@ void Patient_Record::getFromFile()
     {                            // getline will return a whole line until '\n'. it will take the whole line
         istringstream iss(line); // construct an string stream to parse the whole line of string
         // get data until ',' is found, data is seperated by ','
-        getline(iss,id,'\t'); 
+        getline(iss, id, '\t');
         getline(iss, name, '\t');
         getline(iss, description, '\t');
         getline(iss, category, '\t');
         getline(iss, timestamp, '\t');
-        temp->setId(id);
-        temp->setName(name);
-        temp->setDescription(description);
-        temp->setCategory(category);
-        temp->setTimestampString(timestamp);
-        this->display(temp);
-        // this->addPatient(name, description, category);
+        if (id.empty() || name.empty() || description.empty() || category.empty() || timestamp.empty())
+        {
+            continue; // Skip this line if any field is empty
+        }
+        else
+        {
+            temp->setId(id);
+            temp->setName(name);
+            temp->setDescription(description);
+            temp->setCategory(category);
+            temp->setTimestampString(timestamp);
+            this->newPatient(temp, id, name, description, category);
+            totalPatient++;
+        }
     }
-
     fin.close();
-    cout << "\nNew Patient Created\n";
+    // cout << "\nNew Patient Created\n";
 }
 
 // Mae Yang buat
