@@ -58,7 +58,7 @@ void Patient::setDescription(std::string description)
     this->description = description;
 }
 
-void Patient::setCategory(std::string category)
+void Patient::setCategory(const std::string &category)
 {
     this->category = category;
 }

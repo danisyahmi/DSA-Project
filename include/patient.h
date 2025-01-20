@@ -24,7 +24,7 @@ public:
     ~Patient() {}
     void setName(std::string);
     void setDescription(std::string);
-    void setCategory(std::string);
+    void setCategory(const std::string&);
     void setNext(Patient*);
     void setId(std::string);
     void setTimestamp(std::tm);

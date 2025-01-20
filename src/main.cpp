@@ -1,6 +1,6 @@
 
 #include <iostream>
-#include <String>
+// #include <String>
 #include <limits>
 #include <fstream>
 #include "patient-record.h"
@@ -12,77 +12,22 @@ int main()
 {
     Patient_Record patientRecord;
     int choice;
+    int size = 0;
     string name, description, category, searchedItem;
     string categoryChoice[] = {
-        "General",    // For common or unspecified conditions
-        "Chronic",    // For long-term medical conditions
-        "Acute",      // For urgent or severe but short-term conditions
-        "Preventive", // For routine check-ups or preventive care
-        "Palliative"  // For comfort-focused care in terminal conditions
-    };
+        "General",
+        "Chronic",
+        "Acute",
+        "Preventive",
+        "Palliative"};
+    vector<string> foundIds;
     string id, patientToDeleteID;
-    string* foundIds = nullptr;            // Declare foundIds here
-    Patient* patientToUpdate = nullptr; // Declare patientToUpdate here
-    Patient* patientToDelete = nullptr;   // Declare patientToDelete here
-    Patient* patientToPrint = nullptr;
+    Patient *patientToUpdate = nullptr;
+    Patient *patientToDelete = nullptr;
+    Patient *patientToPrint = nullptr;
     Emergency emergencyQueue;
-
-    //----------------------------------------------------------------------------------------------------------
-    // Adding 20 dummy patient records for testing
-    string dummyNames[20] = {
-    "Charlie",
-    "Diana",
-    "Ethan",
-    "George",
-    "Hanna",
-    "Fiona",
-    "Alice",
-    "Kevin",
-    "Isaac",
-    "Michael",
-    "Bob",
-    "Julia",
-    "Paula",
-    "Nina",
-    "Laura",
-    "Oliver",
-    "Rachel",
-    "Quentin",
-    "Samuel",
-    "Tina"
-    };
-
-    for (int i = 1; i < 20; ++i)
-    {
-
-        string name = dummyNames[i];
-        string description = "Description for patient " + dummyNames[i];
-        string category;
-
-        // Assign categories in a round-robin fashion
-        switch (i % 5)
-        {
-        case 1:
-            category = "General";
-            break;
-        case 2:
-            category = "Chronic";
-            break;
-        case 3:
-            category = "Acute";
-            break;
-        case 4:
-            category = "Preventive";
-            break;
-        case 0:
-            category = "Palliative";
-            break;
-        }
-
-        patientRecord.addPatient(name, description, category);
-    }
-    //----------------------------------------------------------------------------------------------------------
-
+    patientRecord.getFromFile();
+    
     do
     {
         cout << "\n=====================\n";
@@ -94,11 +39,10 @@ int main()
         cout << "4. Update Patient\n";
         cout << "5. Display All Patients\n";
         cout << "6. Delete Patient\n";
-        cout << "7. Print Patient to File\n"; // New option
-        cout << "8. Get Patient from File\n"; // New option
-        cout << "9. Sort Patients by Name\n";
-        cout << "10. Emergency Patient\n";
-        cout << "11. Exit\n";
+        cout << "7. Print Patient to File\n";
+        cout << "8. Sort Patients by Name\n";
+        cout << "9. Emergency Patient\n";
+        cout << "10. Exit\n";
         cout << "=====================\n";
         cout << "Enter your choice: ";
         cin >> choice;
@@ -108,7 +52,6 @@ int main()
         {
         case 1: // Add Patient
             cout << "Enter patient name: ";
-            cin.ignore();
             getline(cin, name);
             cout << "Enter patient description: ";
             getline(cin, description);
@@ -132,18 +75,27 @@ int main()
             cout << "Patient added successfully.\n";
             break;
 
+        case 2:
+            cout << "Enter ID to search: ";
+            cin >> searchedItem;
+            patientToPrint = patientRecord.searchID(searchedItem);
+            patientRecord.display(patientToPrint);
+            break;
+
         case 3: // Search Patient by Name/Category
+        {
             cout << "Enter name or category to search: ";
-            cin.ignore();
             getline(cin, searchedItem);
-            foundIds = patientRecord.search(searchedItem);
+            foundIds = patientRecord.search(searchedItem, size);
             patientRecord.display(foundIds);
             break;
+        }
 
         case 4: // Update Patient
             cout << "Enter patient ID to update: ";
             cin >> id;
             patientToUpdate = patientRecord.searchID(id);
+            cout << (patientToUpdate == nullptr ? "null" : patientToUpdate->getName());
             if (patientToUpdate)
             {
                 patientRecord.updatePatient(patientToUpdate);
@@ -163,15 +115,6 @@ int main()
             cout << "Enter patient ID to delete: ";
             getline(cin, patientToDeleteID);
             patientToDelete = patientRecord.deletePatient(patientToDeleteID);
-            if (patientToDelete)
-            {
-                cout << "Popped Patient ID: " << patientToDelete->getId() << endl;
-                delete patientToDelete;
-            }
-            else
-            {
-                cout << "No patients to pop.\n";
-            }
             break;
 
         case 7: // Print Patient to File
@@ -189,16 +132,12 @@ int main()
             }
             break;
 
-        case 8: // Get Patient from File
-            patientRecord.getFromFile();
-            break;
-
-        case 9: // Exit
+        case 8: // Exit
             patientRecord.sortByName();
             cout << "Patients sorted by name successfully.\n";
             break;
 
-        case 10: // Emergency Operations
+        case 9: // Emergency Operations
             int emergencyChoice;
             do
             {
@@ -229,8 +168,7 @@ int main()
                         emergencyQueue.addPatient(
                             patientToPrint->getId(), // Convert ID back to integer if necessary.
                             patientToPrint->getName(),
-                            patientToPrint->getCategory()
-                        );
+                            patientToPrint->getCategory());
                         cout << "Emergency patient added successfully.\n";
                     }
                     else
@@ -257,7 +195,8 @@ int main()
             } while (emergencyChoice != 4);
             break;
 
-        case 11:
+        case 10:
+            patientRecord.printToFile(patientToPrint, 1);
             cout << "Exiting the system. Thank you!\n";
             break;
 
