@@ -43,7 +43,7 @@ void Patient_Record::addPatient(string name, string description, string category
     newPatient->setCategory(category);
     newPatient->setNext(top);
     top = newPatient;
-    this->printToFile(newPatient, 1);
+    printToFile(newPatient, 1);
     totalPatient++;
 }
 // delete element
@@ -209,7 +209,6 @@ void Patient_Record::updatePatient(Patient *patient)
 }
 
 // display all
-// display all
 void Patient_Record::display()
 {
     if (this->underflow())
@@ -220,28 +219,28 @@ void Patient_Record::display()
     current = top;
 
     cout << endl
-        << "Patients in Record:" << endl;
+         << "Patients in Record:" << endl;
     cout << "==============================================================================================================" << endl;
 
     cout << left
-        << setw(10) << "ID"
-        << setw(20) << "Name"
-        << setw(40) << "Description"
-        << setw(20) << "Category"
-        << setw(25) << "Timestamp"
-        << endl;
+         << setw(10) << "ID"
+         << setw(20) << "Name"
+         << setw(40) << "Description"
+         << setw(20) << "Category"
+         << setw(25) << "Timestamp"
+         << endl;
 
     cout << "==============================================================================================================" << endl;
 
     for (int i = 0; i < totalPatient; i++)
     {
         cout << left
-            << setw(10) << current->getId()
-            << setw(20) << current->getName()
-            << setw(40) << current->getDescription()
-            << setw(20) << current->getCategory()
-            << setw(25) << current->timestampToString()
-            << endl;
+             << setw(10) << current->getId()
+             << setw(20) << current->getName()
+             << setw(40) << current->getDescription()
+             << setw(20) << current->getCategory()
+             << setw(25) << current->timestampToString()
+             << endl;
         current = current->getNext();
     }
     cout << "==============================================================================================================" << endl;
@@ -262,8 +261,16 @@ void Patient_Record::display(const vector<string> &userIds)
 
     current = top;
 
-    cout << "\nSearch Results:\n";
-    cout << "===================\n";
+    cout << endl << "==============================================================================================================" << endl;
+    // Display table header
+    cout << left << setw(12) << "ID"
+         << setw(20) << "Name"
+         << setw(30) << "Description"
+         << setw(15) << "Category"
+         << setw(20) << "Timestamp" << endl;
+
+    cout << string(100, '=') << endl; // Divider line
+
     // Traverse the linked list
     while (current != nullptr)
     {
@@ -271,12 +278,11 @@ void Patient_Record::display(const vector<string> &userIds)
         {
             if (current->getId() == id)
             {
-                cout << "ID: " << current->getId() << "\n";
-                cout << "Name: " << current->getName() << "\n";
-                cout << "Description: " << current->getDescription() << "\n";
-                cout << "Category: " << current->getCategory() << "\n";
-                cout << "Timestamp: " << current->timestampToString() << "\n";
-                cout << "-------------------\n";
+                cout << left << setw(12) << current->getId()
+                     << setw(20) << current->getName()
+                     << setw(30) << current->getDescription()
+                     << setw(15) << current->getCategory()
+                     << setw(20) << current->timestampToString() << endl;
                 break;
             }
         }
@@ -287,17 +293,30 @@ void Patient_Record::display(const vector<string> &userIds)
 // display by id
 void Patient_Record::display(Patient *patient)
 {
-    cout << endl
-         << "Search Found:" << endl;
-    cout << "===================" << endl;
-    cout << "ID: " << patient->getId() << endl;
-    cout << "Name: " << patient->getName() << endl;
-    cout << "Description: " << patient->getDescription() << endl;
-    cout << "Category: " << patient->getCategory() << endl;
-    cout << "Timestamp: " << patient->timestampToString() << endl;
-    cout << "-------------------";
+    if (patient == nullptr)
+    {
+        cout << "No patient found." << endl;
+        return;
+    }
+
     cout << endl;
+    cout << left << setw(12) << "ID"
+         << setw(20) << "Name"
+         << setw(30) << "Description"
+         << setw(15) << "Category"
+         << setw(20) << "Timestamp" << endl;
+
+    cout << string(100, '=') << endl; // Divider line
+
+    cout << left << setw(12) << patient->getId()
+         << setw(20) << patient->getName()
+         << setw(30) << patient->getDescription()
+         << setw(15) << patient->getCategory()
+         << setw(20) << patient->timestampToString() << endl;
+
+    cout << string(100, '-') << endl; // Bottom divider line
 }
+
 // get last element
 Patient *Patient_Record::traverseLastNode()
 {
@@ -319,12 +338,23 @@ void Patient_Record::printToFile(Patient *patient, int filechoice)
 
     if (filechoice == 2)
     {
+        fout << std::string(95, '-') << std::endl;
+
         // Output the patient data
-        fout << patient->getId()
-             << '\t' << patient->getName()
-             << '\t' << patient->getDescription()
-             << '\t' << patient->getCategory()
-             << '\t' << patient->timestampToString() << endl;
+        fout << std::left << std::setw(10) << "ID"
+             << std::setw(20) << "Name"
+             << std::setw(30) << "Description"
+             << std::setw(15) << "Category"
+             << std::setw(20) << "Timestamp" << std::endl;
+
+        fout << std::string(95, '-') << std::endl;
+
+        fout << std::left << std::setw(10) << patient->getId()
+             << std::setw(20) << patient->getName()
+             << std::setw(30) << patient->getDescription()
+             << std::setw(15) << patient->getCategory()
+             << std::setw(20) << patient->timestampToString() << std::endl;
+        fout << std::string(95, '-') << std::endl;
     }
     else
     {

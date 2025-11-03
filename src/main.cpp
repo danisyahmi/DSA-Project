@@ -198,6 +198,7 @@ int main()
         case 10:
             patientRecord.printToFile(patientToPrint, 1);
             cout << "Exiting the system. Thank you!\n";
+            exit(1);
             break;
 
         default:
