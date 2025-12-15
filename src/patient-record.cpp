@@ -46,6 +46,7 @@ void Patient_Record::addPatient(string name, string description, string category
     printToFile(newPatient, 1);
     totalPatient++;
 }
+
 // delete element
 // tak
 Patient *Patient_Record::deletePatient(string deleteID)
